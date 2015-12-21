@@ -1,5 +1,5 @@
 ### Welcome!
-Welcome to the GitHit repo for the book about ArcGIS Runtime called [Learning ArcGIS Runtime SDK for .NET.!](http://www.amazon.com/Learning-ArcGIS-Runtime-SDK-NET/dp/1785885456) You can purchase the book here:
+Welcome to the GitHit repo for the book about ArcGIS Runtime called [Learning ArcGIS Runtime SDK for .NET.](http://www.amazon.com/Learning-ArcGIS-Runtime-SDK-NET/dp/1785885456) You can purchase the book here:
 
 
 ## Contents
