@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\ArcGISRuntimeBook\Chapter2\obj\Debug\
+C:\ArcGISRuntimBook\Chapter2\obj\Debug\
 Chapter2
 none
 false
 DEBUG;TRACE
-C:\ArcGISRuntimeBook\Chapter2\App.xaml
+C:\ArcGISRuntimBook\Chapter2\App.xaml
 11151548125
 
 81439466149
 13769644750
 MainWindow.xaml;
 
-False
+True
 

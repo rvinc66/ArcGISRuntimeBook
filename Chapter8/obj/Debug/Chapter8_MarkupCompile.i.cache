@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\ArcGISRuntimeBook\Chapter8\obj\Debug\
+C:\ArcGISRuntimBook\Chapter8\obj\Debug\
 Chapter8
 none
 false
 DEBUG;TRACE
-C:\ArcGISRuntimeBook\Chapter8\App.xaml
+C:\ArcGISRuntimBook\Chapter8\App.xaml
 2-1210166401
 
 14-472826540
-20345415066
+20-1668614203
 MainWindow.xaml;UserControls\CoordinateDisplayUserControl.xaml;
 
-False
+True
 

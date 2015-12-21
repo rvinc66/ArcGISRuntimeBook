@@ -74,3 +74,5 @@ C:\AppDev\VS2013\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.g.resources
 C:\AppDev\VS2013\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.csprojResolveAssemblyReference.cache
 C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.exe
 C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.pdb
+C:\ArcGISRuntimBook\Chapter1\obj\Debug\Chapter1.exe
+C:\ArcGISRuntimBook\Chapter1\obj\Debug\Chapter1.pdb
