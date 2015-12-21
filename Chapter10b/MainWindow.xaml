@@ -1,0 +1,27 @@
+﻿<Window x:Class="Chapter10b.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+                xmlns:locator="clr-namespace:Chapter10b.ViewModels"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:behave="clr-namespace:Chapter10b.Behaviors" 
+        xmlns:uc="clr-namespace:Chapter10b.UserControls"
+		Title="MainWindow" 
+		Height="600" 
+		Width="800">
+    <Grid DataContext="{Binding  Source={StaticResource Locator}, Path=MainViewModel}">
+        <esri:MapView x:Name="MyMapView" 
+					  LayerLoaded="MyMapView_LayerLoaded">
+
+            <i:Interaction.Behaviors>
+                <behave:MapViewBehavior/>
+            </i:Interaction.Behaviors>
+
+            <esri:Map InitialViewpoint="-130,10,-70,60,4326">
+
+            </esri:Map>
+        </esri:MapView>
+
+        <uc:ClipUserControl></uc:ClipUserControl>
+    </Grid>
+</Window>

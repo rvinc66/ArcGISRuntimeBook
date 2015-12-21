@@ -1,0 +1,2117 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Esri.ArcGISRuntime.Toolkit</name>
+    </assembly>
+    <members>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog">
+            <summary>
+            The SignInDialog Control challenges the user for a credential
+            when trying to access secured ArcGIS services.
+            The SignInDialog Control can manage Network or Token credential.
+            </summary>
+            <remarks>
+            This control is designed to work with the <see cref="T:Esri.ArcGISRuntime.Security.IdentityManager"/> and the <see cref="T:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler"/>.
+            </remarks>[TemplatePart(Name = "RichTextBoxMessage", Type = typeof(RichTextBox))]
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog"/> control.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.#cctor">
+            <summary>
+            Static initialization for the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog"/> control.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application
+            code or internal processes (such as a rebuilding layout pass) call 
+            <see cref="T:System.Windows.Controls.Control.ApplyTemplate"/>. In
+            simplest terms, this means the method is called just before a UI
+            element displays in an application.
+            </summary>t
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.TitleProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.Title"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.CreateCredentialAsync(Esri.ArcGISRuntime.Security.CredentialRequestInfo)">
+            <summary>
+            Challenge handler leaveraging the SignInDialog in a child window dialog.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.CredentialRequestInfo">
+            <summary>
+            Gets the information about the ArcGIS service that needs a credential for getting access to. This property is set by calling <see cref="M:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.CreateCredentialAsync(Esri.ArcGISRuntime.Security.CredentialRequestInfo)"/>.
+            </summary>
+            <value>
+            The credential request info.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.UserName">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+            <value>
+            The name of the user.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.Password">
+            <summary>
+            Gets or sets the password used to get the token.
+            </summary>
+            <value>
+            The password.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.IsBusy">
+            <summary>
+            Gets a value indicating whether this instance is busy getting a token.
+            </summary>
+            <value>
+              <c>true</c> if this instance is busy; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.ErrorMessage">
+            <summary>
+            Gets the error that occured during the latest token generation.
+            </summary>
+            <value>
+            The error message.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.Title">
+            <summary>
+            Gets or sets the title that can be displayed by the SignInDialog or by the container of the SignInDialog.
+            </summary>
+            <remarks>The default SignInDialog template doesn't display the Title.</remarks>
+            <value>
+            The title.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.CredentialSaveOption">
+            <summary>
+            Gets or sets the option that specifies the initial state of the dialog's Save Credential check
+            box. The default value is clear (unchecked).
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.GenerateCredentialCommand">
+            <summary>
+            Gets the generate credential command allowing to generate a credential asynchronously.
+            </summary>
+            <remarks>This command is generally executed on the 'OK' button.</remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.CancelCommand">
+            <summary>
+            Gets the cancel command allowing to cancel the ongoing token request.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager">
+            <summary>
+            *FOR INTERNAL USE ONLY* Helper to execute a command when user types 'Enter' and to update the binding source when the text changes.
+            </summary>
+            <exclude/>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.GetEnterCommand(System.Windows.DependencyObject)">
+            <summary>
+            Gets the command.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.SetEnterCommand(System.Windows.DependencyObject,System.Windows.Input.ICommand)">
+            <summary>
+            Sets the command.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.EnterCommandProperty">
+            <summary>
+            Identifies the Command attached property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.PasswordTextProperty">
+            <summary>
+            Identifies the PasswordText attached property.
+            In WPF this a workaround for the Password property that is not a DP.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.GetPasswordText(System.Windows.DependencyObject)">
+            <summary>
+            Gets the password text.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TextInputManager.SetPasswordText(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Sets the password text.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionBoolConverter">
+            <summary>
+            *FOR INTERNAL USE ONLY* Convert a  CredentialSaveOption to a bool.
+            </summary>
+            <exclude/>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionBoolConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the source data before passing it to the target for display in the UI.
+            </summary>
+            <param name="value">The source data being passed to the target.</param>
+            <param name="targetType">The type of the target property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the target dependency property.
+            </returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionBoolConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the target data before passing it to the source object. This method is called only in TwoWay bindings.
+            </summary>
+            <param name="value">The target data being passed to the source.</param>
+            <param name="targetType">The type of the target property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the source object.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionVisibilityConverter">
+            <summary>
+            *FOR INTERNAL USE ONLY* Convert a  CredentialSaveOption to a visibility.
+            </summary>
+            <exclude/>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the source data before passing it to the target for display in the UI.
+            </summary>
+            <param name="value">The source data being passed to the target.</param>
+            <param name="targetType">The type of the target property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the target dependency property.
+            </returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOptionVisibilityConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the target data before passing it to the source object. This method is called only in TwoWay bindings.
+            </summary>
+            <param name="value">The target data being passed to the source.</param>
+            <param name="targetType">The type of the target property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the source object.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOption">
+            <summary>
+            Identifies the state of the dialog box option on whether to save credentials.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOption.Unselected">
+            <summary>
+            The "Save credentials?" dialog box is not selected, indicating that the user doesn't want their credentials saved.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOption.Selected">
+            <summary>
+            The "Save credentials?" dialog box is selected, indicating that the user wants their credentials saved.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.CredentialSaveOption.Hidden">
+            <summary>
+            The "Save credentials?" dialog box is not displayed at all.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Security.CredentialManager">
+            <summary>
+            Helper class for managing the storage of credentials in the isolated storage in a secure manner
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.CredentialManager.AddCredential(Esri.ArcGISRuntime.Security.Credential)">
+            <summary>
+            Adds a credential to the isolated storage.
+            </summary>
+            <param name="credential">The credential to be added.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.CredentialManager.RemoveAllCredentials">
+            <summary>
+            Removes all ArcGISRuntime credentials.
+            </summary>
+            <remark>Remove application credentials only.</remark>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.CredentialManager.RetrieveAll">
+            <summary>
+            Retrieves all ArcGISRuntime credentials stored in the isolated storage.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler">
+            <summary>
+            Desktop component that handles the authorization errors returned by the requests to the ArcGIS resources.
+            <para>
+            This component is designed to work with the <see cref="T:Esri.ArcGISRuntime.Security.IdentityManager"/>.
+            It can be initialized with code like:
+            <code>
+            IdentityManager.Current.ChallengeHandler = new Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler();
+            </code>
+            </para>
+            <para/>
+            Optionally, depending on the <see cref="P:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.AllowSaveCredentials"/> value, the credentials may be cached in the <see cref="T:System.IO.IsolatedStorage.IsolatedStorage"/> in a secure manner.
+            <para/>
+            By default the SignInChallengeHandler doesn't allow saving the Credentials. To allow it, the <see cref="T:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler"/> can be instantiated with code like:
+            <code>
+             IdentityManager.Current.ChallengeHandler = new Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler { AllowSaveCredentials = true, CredentialSaveOption = CredentialSaveOption.Selected  };
+            </code>
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.#ctor(Esri.ArcGISRuntime.Toolkit.Controls.SignInDialog)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler"/> class.
+            </summary>
+            <param name="signInDialog">The underlying SignInDialog that will displayed inside a ContentDialog.</param>
+            <exception cref="T:System.ArgumentNullException">signInDialog</exception>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.ClearCredentialsCache">
+            <summary>
+            Clears all ArcGISRuntime credentials from the Credential Locker.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.RetrieveAllSavedCredentials">
+            <summary>
+            Retrieves all ArcGISRuntime credentials stored in the isolated storage.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.CreateCredentialAsync(Esri.ArcGISRuntime.Security.CredentialRequestInfo)">
+            <summary>
+            Challenge for getting the credential allowing to access to the specified ArcGIS resource.
+            </summary>
+            <param name="credentialRequestInfo">Information about the ArcGIS resource that needs a credential for getting access to.</param>
+            <returns>a Task object with <see cref="T:Esri.ArcGISRuntime.Security.Credential"/> upon successful completion. 
+            Otherwise, the Task.Exception is set.</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.AllowSaveCredentials">
+            <summary>
+            Gets or sets a value indicating whether the entered credentials may be saved in the credential locker.
+            <para/>
+            The first time AllowSaveCredentials is set to true, the cached credentials are added to the <see cref="M:Esri.ArcGISRuntime.Security.IdentityManager.AddCredential(Esri.ArcGISRuntime.Security.Credential)">IdentityManager</see>
+            </summary>
+            <remark>The default value is false.</remark>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.CredentialSaveOption">
+            <summary>
+            Gets or sets the option that specifies the initial state of the dialog's Save Credential check
+            box. This property is ignored if <see cref="P:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.AllowSaveCredentials"/> is set to false.
+            </summary>
+            <para>If the value is Hidden, the user will have no choice to save the entered credential or not.
+            The credential will always be saved if <see cref="P:Esri.ArcGISRuntime.Toolkit.Security.SignInChallengeHandler.AllowSaveCredentials"/> is set to true.</para>
+            <remarks>The default value is Unselected.</remarks>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Security.OAuthAuthorizeHandler">
+            <summary>
+            Desktop OAuthAuthorize handler which encapsulates the redirection of the user to the OAuth authorization URI by using a WebBrowser.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.OAuthAuthorizeHandler.AuthorizeAsync(System.String,System.String,System.String)">
+            <summary>
+            Redirects the user to the authorization URI by using a WebBrowser.
+            </summary>
+            <param name="serviceUri">The service URI.</param>
+            <param name="authorizeUri">The authorize URI.</param>
+            <param name="callbackUri">The callback URI.</param>
+            <returns>Dictionary of parameters returned by the authorization URI (code, access_token, refresh_token, ...)</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Security.OAuthAuthorizeHandler.DecodeParameters(System.Uri)">
+            <summary>
+            Decodes the parameters returned when the user agent is redirected to the callback url
+            The parameters can be returned as fragments (e.g. access_token for Browser based app) or as query parameter (e.g. code for Server based app)
+            </summary>
+            <param name="uri">The URI.</param>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Properties.Resources.FeatureDataForm_ApplyButtonText">
+            <summary>
+              Looks up a localized string similar to Apply.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Properties.Resources.FeatureDataForm_ResetButtonText">
+            <summary>
+              Looks up a localized string similar to Reset.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Attribution">
+            <summary>
+            The Attribution Control displays Copyright information for Layers that have the ICopyright 
+            Interface implemented.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Attribution"/> class.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.LayersProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Layers"/> Dependency Property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.ScaleProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Scale"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.ExtentProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Extent"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.ItemsProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Items"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Layers">
+            <summary>
+            Gets or sets the layers to display attribution for.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Scale">
+            <summary>
+            Gets or sets the scale for filtering layers by their visible scale range and for getting the copyrights that may depend on the scale.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Extent">
+            <summary>
+            Gets or sets the extent for which the layer copyrights are displayed.
+            </summary>
+            <seealso cref="T:Esri.ArcGISRuntime.Layers.IQueryCopyright"/>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Attribution.Items">
+            <summary>
+            Gets the items to display in attribution control.
+            </summary>
+            <value>
+            The items.
+            </value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField">
+            <summary>
+            FeatureDatafield is used to edit or display a single attribute from a GeodatabaseFeature.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField"/> class.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GeodatabaseFeatureProperty">
+            <summary>
+            DependencyProperty for <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GeodatabaseFeature"/>.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.FieldNameProperty">
+            <summary>
+            DependencyProperty for FieldName.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.IsReadOnlyProperty">
+            <summary>
+            DependencyProperty for IsReadOnly.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.BindingValueProperty">
+            <summary>
+            DependencyProperty for BindingValue.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ValidationExceptionProperty">
+            <summary>
+            DependencyProperty for ValidationException.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorTemplateProperty">
+            <summary>
+            DependencyProperty for SelectorTemplate.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.InputTemplateProperty">
+            <summary>
+            DependencyProperty for InputTemplate.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyTemplateProperty">
+            <summary>
+            DependencyProperty for ReadOnlyTemplate.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GetTextBoxChangedListener(System.Windows.DependencyObject)">
+            <summary>
+            *FOR INTERNAL USE ONLY* : Gets the text box changed listener.
+            </summary>
+            <param name="obj">The object.</param>
+            <exclude/>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SetTextBoxChangedListener(System.Windows.DependencyObject,System.Windows.Controls.TextBox)">
+            <summary>
+            *FOR INTERNAL USE ONLY* : Sets the text box changed listener.
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="value">The value.</param>
+            <exclude/>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.TextBoxChangedListenerProperty">
+            <summary>
+            *FOR INTERNAL USE ONLY* : The text box changed listener property
+            </summary>
+            <exclude/>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application 
+            code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.Refresh">
+            <summary>
+            This method is used to create the UI for the FeatureDataField.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GenerateSelectorField">
+            <summary>
+            Creates the SelectorTemplate.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GenerateInputField">
+            <summary>
+            Creates the InputTemplate.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GenerateReadonlyField">
+            <summary>
+            Create the ReadOnlyTemplate.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ValueChangedCallback(System.Object)">
+            <summary>
+             Callback used to track when the value changes in one of the DataItem classes.
+            </summary>
+            <param name="value">new value entered or selected by user.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.EnsureCorrectDataType(System.Object)">
+            <summary>
+            Tries to make sure that the value can be converted to the correct datatype if
+            the input control works with a differnt datatype. i.e. Textbox works with string data.
+            </summary>
+            <param name="value">The value to check</param>
+            <returns>Either a corrected data type or the input value.</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.UpdateValidationState">
+            <summary>
+            Changes the validation state from betwenn Invalid and Valid.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GoToState(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Helper method to parse the visual tree of the ContentControl to look VisualStatue that 
+            are defined for ValidationStates category. 
+            </summary>
+            <param name="element"></param>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.TryValidationState(System.Windows.FrameworkElement,System.String)">
+            <summary>
+            Attempts to look for a VisualStateGroup called "ValidationState" and invoke the 
+            Storyboard for the given visual state.
+            </summary>
+            <param name="element">The FrameworkElement to check for VisualStates</param>
+            <param name="stateName">The name of the validation state we will try to invoke.</param>
+            <returns>returns true if the storyboard was found and invoked.</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.Cancel">
+            <summary>
+            Changes the current value back to 
+            the GeodatabaseFeature last saved value.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.CommitChange(System.Object)">
+            <summary>
+            Commits FeatureDataField value back to the GeodatabaseFeature.
+            </summary>
+            <param name="value">The new value that will be committed.</param>
+            <returns>returns true if the value was commited and false if the 
+            value didn't pass validation.</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.GeodatabaseFeature">
+            <summary>
+            Gets or sets the <see cref="T:Esri.ArcGISRuntime.Data.GeodatabaseFeature"/>.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.FieldName">
+            <summary>
+            Gets or sets the name of the field from the GeodatabaseFeature.Attributes. 
+            The UI input generated will be for this field.
+            </summary>       
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.IsReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the UI will be readonly. 
+            If IsReadOnly is true then the UI generated will use the ReadOnlyTemplate. 
+            Any field that is not readonly can be made readonly, but field that are 
+            readonly already as defined by thier FieldInfo entry in GeodatabaseFeature.Schema.Fields 
+            cannot be made editable. 
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.BindingValue">
+            <summary>
+            Gets or sets the binding value.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ValidationException">
+            <summary>
+            Gets or sets the validation exception. If a validation exception occurs this 
+            property will hold the validation Exception. default validation is handled based
+            on FieldInfo found inside GeodatabaseFeature.Schema.Fields. Custom validation can be added
+            by subsribing to ValueChanging event.
+            </summary>     
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorTemplate">
+            <summary>
+            Gets or sets the selector template. Selector template is used for fields 
+            that are CodeValueDomain types as define in FieldInfo.Domain.
+            </summary>     
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.InputTemplate">
+            <summary>
+            Gets or sets the input template. This template is used for 
+            fields that do not have CodedValueDomain information.
+            </summary>       
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyTemplate">
+            <summary>
+            Gets or sets the read only template. This template is used for fields
+            that are readonly. 
+            </summary>      
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ValueChanging">
+            <summary>
+            This event is rasied when the Value property changes but 
+            has not been commit back to the GeodatabaseFeature. The ValueChanging 
+            event can be used to enforce application validation setting the 
+            ValueChangingEventArgs.ValidationException.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ValueChanged">
+            <summary>
+            This event is rasied when the Value property changes and the value
+            has been successfully commit back to the GeodatabaseFeature.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem">
+            <summary>
+            Abstract base class for all DataItem derived class. They all should have 
+            a Value property and notify the FeatureDataField when thier value changes.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.#ctor(System.Action{System.Object})">
+            <summary>
+            Creates new instance of DataItem and sets the callback property.
+            </summary>
+            <param name="callback">The callback to be raised 
+            when Value proeprty changes.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.#ctor(System.Action{System.Object},System.Object)">
+            <summary>
+            Creates new instance of DataItem and sets the callback and value property.
+            </summary>
+            <param name="callback">The callback to be raised 
+            when Value proeprty changes.</param>
+            <param name="value">The default value.</param>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.Callback">
+            <summary>
+            Callback for notifying FeatureDataField that the value proepry has changed.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.OnValueChanged">
+            <summary>
+            Rasies the callback and passes the new value.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.Value">
+            <summary>
+            The Value property to bind ContentTemplate.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.DataItem.ErrorMessage">
+            <summary>
+            Gets or sets the error message.
+            </summary>           
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyDataItem">
+            <summary>
+            ReadOnlyDataItem is a bindable object for ReadOnlyTeample.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyDataItem.#ctor(Esri.ArcGISRuntime.Data.FieldInfo,System.Object)">
+            <summary>
+            Creates a new instance of ReadOnlyDataItem and sets 
+            the FieldInfo and Value properties.
+            </summary>
+            <param name="fileInfo">the field information for the </param>
+            <param name="value">default value.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyDataItem.GetReadonlyValue">
+            <summary>
+            Gets the display value.
+            </summary>            
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.ReadOnlyDataItem.Value">
+            <summary>
+            The current value for the ReadOnlyTemplate to display.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.InputDataItem">
+            <summary>
+            InputDataItem is a bindable object for InputTemplate.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorDataItem">
+            <summary>
+            SelectorDataItem is used as the binding object for the SelectorTemplate.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorDataItem.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Object,System.String}},System.Action{System.Object},System.Object)">
+            <summary>
+            Constructor that creates SelectorDataItem.
+            </summary>
+            <param name="items">Coded value domain options</param>
+            <param name="callback">When value changes a callback to notify of a value change.</param>
+            <param name="value">The default value which should be selected.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorDataItem.SelectItem(System.Object)">
+            <summary>
+            Looks for and item entry that has the matching key for the given input value.
+            </summary>
+            <param name="value">returns a valid selector object</param>            
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorDataItem.OnValueChanged">
+            <summary>
+            When value changes raised the callback with the selected value.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataField.SelectorDataItem.Items">
+            <summary>
+            The Items used to bind to the selector template.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.ValueChangedEventArgs">
+            <summary>
+            Event args used for the ValueChanged event of FeatureDataField.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.ValueEventArgs">
+            <summary>
+            Base class for ValueChangeing and ValueChange events for FeatureDataField.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.ValueEventArgs.OldValue">
+            <summary>
+            Gets the old value.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.ValueEventArgs.NewValue">
+            <summary>
+            Gets the new value.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.ValueChangingEventArgs">
+            <summary>
+            Event args used for the ValueChanging event of FeatureDataField.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.ValueChangingEventArgs.ValidationException">
+            <summary>
+            Sets the validation exception. Used to trigger 
+            validation state for user defined validation.
+            </summary>     
+        </member>
+        <member name="T:ActionCommand">
+            <summary>
+            Very simple command that takes an <see cref="T:System.Action"/> with 
+            no parameters and invokes the  <see cref="T:System.Action"/> when 
+            the <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/> method is invoked.
+            </summary>
+        </member>
+        <member name="M:ActionCommand.#ctor(System.Action,System.Func{System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ActionCommand"/> class.
+            </summary>
+            <param name="executeAction">The action to be performed on <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)"/>.</param>
+            <param name="canExecuteFunction">The fuction that will test if the action can be executed.</param>
+        </member>
+        <member name="M:ActionCommand.CanExecute(System.Object)">
+            <summary>
+            Defines the method that determines whether 
+            the command can execute in its current state.
+            </summary>
+            <param name="parameter">Data used by the command.  
+            If the command does not require data to be passed, 
+            this object can be set to null.</param>
+            <returns>
+            true if this command can be executed; 
+            otherwise, false.
+            </returns>
+        </member>
+        <member name="M:ActionCommand.Execute(System.Object)">
+            <summary>
+            Defines the method to be called when 
+            the command is invoked.
+            </summary>
+            <param name="parameter">Data used by the command.  
+            If the command does not require data to be passed, 
+            this object can be set to null.</param>
+        </member>
+        <member name="M:ActionCommand.RaiseCanExecute">
+            <summary>
+            Raises the can execute function
+            </summary>
+        </member>
+        <member name="E:ActionCommand.CanExecuteChanged">
+            <summary>
+            Occurs when changes occur that affect 
+            whether or not the command should execute.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm">
+            <summary>
+            FeatureDataForm control.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked 
+            whenever application code or internal processes 
+            call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.GeodatabaseFeatureProperty">
+            <summary>
+            The dependency property for GeodatabaseFeature.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.FieldsProperty">
+            <summary>
+            The dependency property for the Fields property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.LabelStyleProperty">
+            <summary>
+            The dependency property for the LabelStyle property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ContainerStyleProperty">
+            <summary>
+            The dependency property for the ContainerStyle property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.InputTemplateProperty">
+            <summary>
+            The dependency property for the InputTemplate property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.DateTimeTemplateProperty">
+            <summary>
+            The dependency property for the DateTimeTemplate property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.IsReadOnlyProperty">
+            <summary>
+            The dependency property for the IsReadOnly property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ApplyCommandProperty">
+            <summary>
+            The dependency property for the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ApplyCommand"/>.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ResetCommandProperty">
+            <summary>
+            The dependency property for the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ResetCommand"/>
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasEditsProperty">
+            <summary>
+            The dependency property for <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasEdits"/>.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasErrorProperty">
+            <summary>
+            The dependency property for <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasError"/>.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.Refresh">
+            <summary>
+            Creates the UI of the entire control
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.CreateContainer">
+            <summary>
+            Creates a UI container for each field.
+            </summary>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.CreateLabel(System.String)">
+            <summary>
+            Creates a UI label for each field
+            </summary>
+            <param name="labelText">The label text.</param>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.CreateControl(Esri.ArcGISRuntime.Data.GeodatabaseFeature,Esri.ArcGISRuntime.Data.FieldInfo,System.Boolean)">
+            <summary>
+            Creates a UI control for editing each field.
+            </summary>
+            <param name="feature">The feature.</param>
+            <param name="fieldInfo">FieldInfo for edit control</param>
+            <param name="isReadOnly">Value indicating if control should be readonly</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ControlOnPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Watch FeatureDataField for changes to Value and ValidationException in order to know when 
+            SaveCommand and ResetCommand can be active.
+            </summary>
+            <param name="sender">FeatureDataField</param>
+            <param name="propertyChangedEventArgs">Information about which property changed.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ApplyChanges">
+            <summary>
+            This will save edit featue changes back to original feature.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.CanApplyChanges">
+            <summary>
+            This will return true if the FeatureDataForm has 
+            changes and none of the changes are invalid.
+            </summary>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.Reset">
+            <summary>
+            This will override all edit feature changes back
+            to the original feature values.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.CanReset">
+            <summary>
+            This will return true if a change has 
+            been made to the edit feature.
+            </summary>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasChanges">
+            <summary>
+            Compares orignial GeodatabaseFeature to the clone GeodatabaseFeature 
+            to check for differences in attribute values.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.GeodatabaseFeature">
+            <summary>
+            Gets or sets the GeodatabaseFeature that contains the 
+            information needed to create fields and binding.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.Fields">
+            <summary>
+            Gets or sets the fields to display. A field will be 
+            displayed according to the index of this property.
+            </summary>        
+            <remarks>
+            <list type="bullet">
+            <item>if Fields property is "null" or "empty" all supported editable fields will be displayed.</item>
+            <item>if Fields property contains "*" then all supported fields will be displayed editable and non-editable.</item>
+            <item>if Fields property contains a specific set of fields "&lt;FieldName1&gt;,&lt;FieldName2&gt;" then only these 
+            fields show in the order they are provided. Field names are case sensitive and only supported 
+            field types will be rendered.</item>
+            </list>               
+            <pre>
+            The non-supported field types are XML, Blob, Geometry and Raster.
+            </pre>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.LabelStyle">
+            <summary>
+            Gets or sets the label style. This property can be used 
+            to set the label style for all fields in the FeatureDataForm.
+            </summary>      
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ContainerStyle">
+            <summary>
+            Gets or sets the container style. This property can be used 
+            to set the container style for all fields in the FeatureDataForm.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.InputTemplate">
+            <summary>
+            Gets or sets the input template. This property can be used 
+            to set the input template for all fields in the FeatureDataForm.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.DateTimeTemplate">
+            <summary>
+            Gets or sets the date time template. This property can be used 
+            to set the date time template for all fields in the FeatureDataForm.
+            </summary>  
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.IsReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the form is read only.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ApplyCommand">
+            <summary>
+            Gets the apply command which an be used to apply 
+            any edits that have been made to the FeatureDataForm.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ResetCommand">
+            <summary>
+            Gets the cancel command which an be used to cancel 
+            any edits that have been made to the FeatureDataForm.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasEdits">
+            <summary>
+            Gets a value indicating whether the form has
+            edits that haven't been saved.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.HasError">
+            <summary>
+            Get that value indicating whether the form
+            has any fields that have a validation excption.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.GeneratingField">
+            <summary>
+            Occurs when each fields UI is being generated.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.FeatureDataForm.ApplyCompleted">
+            <summary>
+            Occurs when changes are applied to the GeodatabaseFeature.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs">
+            <summary>
+            GeneratingFieldEventArgs contains information about a 
+            field that will define how the field will be rendered. 
+            Properties can be changed to customize what is rendered.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.FieldName">
+            <summary>
+            Gets the name of the field being created.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.FieldType">
+            <summary>
+            Gets the field type being created.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.LabelText">
+            <summary>
+            Gets or sets the label text.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.IsReadOnly">
+            <summary>
+            Gets or sets a value indicating whether 
+            this field is readonly.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.LabelStyle">
+            <summary>
+            Gets or sets the label style.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.ContainerStyle">
+            <summary>
+            Gets or sets the container style.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.InputTemplate">
+            <summary>
+            Gets or sets the fields InputTemplate property.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.GeneratingFieldEventArgs.DateTimeTemplate">
+            <summary>
+            Gets or sets the field DateTimeTemplate property
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.CollectionExtensions">
+            <summary>
+            IEnumerable extensions : ToObservableCollection, ForEach, Descendants, Leaves
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CollectionExtensions.ToObservableCollection``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Converts an enumerable to an observable collection.
+            </summary>
+            <typeparam name="T">The type of objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CollectionExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+             Performs the specified action on each element of the enumeration.
+            </summary>
+            <typeparam name="T">The type of objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable.</param>
+            <param name="action">The System.Action delegate to perform on each element of the enumeration.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CollectionExtensions.Descendants``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Find all descendants from an enumerable.
+            </summary>
+            <typeparam name="T">The type of objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable.</param>
+            <param name="childrenDelegate">The children delegate.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.CollectionExtensions.Leaves``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Find all leaves from an enumerable.
+            </summary>
+            <typeparam name="T">The type of objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable.</param>
+            <param name="childrenDelegate">The children delegate.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel">
+            <summary>
+            Represents a layer in the TOC/legend.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel">
+            <summary>
+            Represents a basic item in the legend/TOC.
+            A basic item contains a label and an image. 
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.#ctor(Esri.ArcGISRuntime.Layers.LegendItemInfo,Esri.ArcGISRuntime.Geometry.GeometryType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel"/> class from a <see cref="T:Esri.ArcGISRuntime.Layers.LegendItemInfo"/>.
+            </summary>
+            <param name="legendItemInfo">The legend item info.</param>
+            <param name="geometryType">Type of the geometry.</param>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.Label">
+            <summary>
+            Legend item label.
+            </summary>
+            <value>The label.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.Symbol">
+            <summary>
+            Gets the symbol that represents this instance 
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.Description">
+            <summary>
+            The description of the legend item.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.LayerItemsSource">
+            <summary>
+            Gets the children of the legend item. 
+            </summary>
+            <value>The children. Note that a basic item returns always null but the method can be overridden by inherited classes.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.IsSelected">
+            <summary>
+            Gets or sets a value indicating whether this instance is selected.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is selected; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.IsExpanded">
+            <summary>
+            Gets or sets a value indicating whether this instance is expanded.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is expanded; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.Template">
+            <summary>
+            Gets or sets the template for this legend item. Depending on the type of item, the template can be the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LegendItemTemplate"/> , the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerTemplate"/>
+            or the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.MapLayerTemplate"/>.
+            The template can also be set explicitely by code.
+            </summary>
+            <value>The template.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.Tag">
+            <summary>
+            Gets or sets an object associated with the legend item.
+            This provides the ability to attach an arbitrary object to the item.
+            </summary>
+            <value>A System.Object that is attached or associated with a legend item..</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.GeometryType">
+            <summary>
+            The symbol geometry type (<see cref="F:Esri.ArcGISRuntime.Geometry.GeometryType.Unknown"/> by default).
+            <para>
+            If the geometry type is <see cref="F:Esri.ArcGISRuntime.Geometry.GeometryType.Unknown"/>, the geometry type will be deduced from the symbol type.
+            However, in some cases such as a MarkerSymbol used to symbolize a line or an area object, it may be usefull to set this parameter.
+            </para>
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.LegendTree">
+            <summary>
+            Gets or sets the parent legend tree.
+            </summary>
+            <value>The legend tree.</value>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.#ctor(Esri.ArcGISRuntime.Layers.Layer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel"/> class.
+            </summary>
+            <param name="layer">The layer this item represents.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel"/> class without layer.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.#ctor(Esri.ArcGISRuntime.Layers.Layer,Esri.ArcGISRuntime.Layers.LayerLegendInfo,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel"/> class from a <see cref="T:Esri.ArcGISRuntime.Layers.LayerLegendInfo"/>..
+            </summary>
+            <param name="layer">The layer.</param>
+            <param name="layerLegendInfo">The layer legend info.</param>
+            <param name="defaultLayerDescription">The default layer description (= the map layer description).</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.GetTemplate">
+            <summary>
+            Gets the template.
+            </summary>
+            <returns>The template</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.UpdateLayerVisibilities(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Updates recursively the properties IsEnabled, IsVisible, IsInScaleRange and IsInTimeExtent.
+            </summary>
+            <param name="isParentVisible">The visibility of the parent.</param>
+            <param name="isParentInScaleRange">The scale range status of the parent.</param>
+            <param name="isParentInTimeExtent">The time extent status of the parent.</param>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.Layer">
+            <summary>
+            The map layer associated to the layer item.
+            </summary>
+            <value>The layer.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.ParentLabel">
+            <summary>
+            Gets the label of the parent layer.
+            </summary>
+            <value>The label of the parent layer.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.SubLayerID">
+            <summary>
+            The ID of the sub layer.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerType">
+            <summary>
+            The type of layer.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.MinimumScale">
+            <summary>
+            The minimum resolution in which this layer can be viewed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.MaximumScale">
+            <summary>
+            The maximum scale in which this layer can be viewed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsEnabled">
+            <summary>
+            Whether the layer is currently enabled i.e. is checked on.
+            </summary>
+            <value><c>true</c> if the layer is currently enabled; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsVisible">
+            <summary>
+            Whether the layer is currently visible (taking care of the ascendants visibility, of the scale range and of the time extent).
+            </summary>
+            <remarks>The IsVisible property is also taking care of the layer intialization failure (i.e is false whether a layer failed to initialize)
+            and of the tiled layers spatial reference mismatchs (i.e. is false whether the spatial reference of a tiled layer is not the same as the map spatial reference).</remarks>
+            <value><c>true</c> if the layer is currently visible; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsInScaleRange">
+            <summary>
+            Gets or sets a value indicating whether this instance is in the scale range to be visible.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is in scale range; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsInTimeExtent">
+            <summary>
+            Gets or sets a value indicating whether this instance is in the time extent to be visible.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is in time extent; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsBusy">
+            <summary>
+            Gets a value indicating whether this the layer is currently loading
+            its legend.
+            </summary>
+            <value><c>true</c> if this instance is busy; otherwise, <c>false</c>.</value>
+            <seealso cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.BusyIndicatorVisibility"/>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.BusyIndicatorVisibility">
+            <summary>
+            Gets the busy indicator visibility.
+            The busy indicator is visible while the layer is currently loading its legend.
+            </summary>
+            <remarks>This value makes sense for map layer items.</remarks>
+            <value>The busy indicator visibility.</value>
+            <seealso cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsBusy"/>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItems">
+            <summary>
+            The collection of <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel"/> under this layer item.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LegendItems">
+            <summary>
+            The collection of <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LegendItemViewModel"/> under this layer item.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItemsSource">
+            <summary>
+            The enumeration of all legend items (LegendItemViewModel + LayerItemViewModel) displayed under this layer item.
+            This enumeration is depending on the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ShowOnlyVisibleLayers"/> property.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsGroupLayer">
+            <summary>
+            Gets a value indicating whether this instance is a group layer.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is group layer; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsMapLayer">
+            <summary>
+            Gets a value indicating whether this instance is a map layer item.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is a map layer item; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.HideChildren">
+            <summary>
+            Gets or sets a value indicating whether the children of this layer item must be hidden in the legend.
+            </summary>
+            <remarks>
+            When a layer item is hidden, it's no more returned in the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItemsSource"/> enumeration of its parent items, but 
+            it's still returned in the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItems"/> enumeration of its parent item.</remarks>
+            <value>
+            	<c>true</c> if the children (layerItem and legendItem) must not be displayed in the legend; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsHidden">
+            <summary>
+            Gets or sets a value indicating whether this layer item must be hidden in the legend.
+            </summary>
+            <remarks>
+            When a layer item is hidden, it's no more returned in the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItemsSource"/> enumeration of its parent items, but 
+            it's still returned in the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItems"/> enumeration of its parent item.</remarks>
+            <value>
+            	<c>true</c> if the layer item must not be displayed in the legend; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.IsTransparent">
+            <summary>
+            Gets or sets a value indicating whether this layer item is transparent, i.e. the item is not displayed in the legend
+            and its children are attached to its parent.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is transparent; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.LayerItemViewModel.LayerItemsOptions">
+            <summary>
+            Gets or sets the layer items options used to get the layer items.
+            </summary>
+            <value>The layer items options.</value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Legend">
+            <summary>
+            The Legend is a utility control that displays the symbology of Layers and their description for map 
+            interpretation.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Legend.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Legend"/> class.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ScaleProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Scale"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayersProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Layers"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ShowOnlyVisibleLayersProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ShowOnlyVisibleLayers"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItemsProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItems"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItemsSourceProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItemsSource"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LegendItemTemplateProperty">
+            /// <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LegendItemTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerTemplateProperty">
+            /// <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ReverseLayersOrderProperty">
+            /// <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ReverseLayersOrder"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Legend.MapLayerTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LegendItemTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Refresh">
+            <summary>
+            Refreshes the legend control.
+            </summary>
+            <remarks>Note : In most cases, the control is always up to date without calling the refresh method.</remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Legend.OnApplyTemplate">
+            <summary>
+            Invoked whenever application code or internal processes (such as a 
+            rebuilding layout pass) call ApplyTemplate. In simplest terms, this
+            means the method is called just before a UI element displays in your
+            app. Override this method to influence the default post-template 
+            logic of a class.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Scale">
+            <summary>
+            Gets or sets the scale if filtering layers by their visible scale range.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Layers">
+            <summary>
+            Gets or sets the layers to display the legend for.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ShowOnlyVisibleLayers">
+            <summary>
+            Gets or sets a value indicating whether only the visible layers are participating to the legend.
+            </summary>
+            <value>
+            	<c>true</c> if only the visible layers are participating to the legend; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItems">
+            <summary>
+            Gets the LayerItems for all layers that the legend control is working with.
+            </summary>
+            <value>The LayerItems.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerItemsSource">
+            <summary>
+            The enumeration of the legend items displayed at the first level of the legend control.
+            </summary>
+            <value>The layer items source.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LegendItemTemplate">
+            <summary>
+            Gets or sets the legend item template
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.LayerTemplate">
+            <summary>
+            Gets or sets the layer template
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.ReverseLayersOrder">
+            <summary>
+            Gets or sets a property specifying whether the order the layers are 
+            processed in should be reversed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.MapLayerTemplate">
+            <summary>
+            Gets or sets the map layer template
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.Legend.Refreshed">
+            <summary>
+            Occurs when the legend is refreshed. 
+            Give the opportunity for an application to add or remove legend items.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Legend.RefreshedEventArgs">
+            <summary>
+            Legend Event Arguments used when the legend is refreshed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.RefreshedEventArgs.LayerItem">
+            <summary>
+            Gets the layer item being refreshed.
+            </summary>
+            <value>The layer item.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Legend.RefreshedEventArgs.Error">
+            <summary>
+            Gets a value that indicates which error occurred during the legend refresh.
+            </summary>
+            <value>An System.Exception instance, if an error occurred during the refresh; otherwise null.</value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree">
+            <summary>
+            Internal class encapsulating a layer item representing the virtual root item for the legend tree.
+            The LayerItems collection of this item is the collection of map layer item displayed at the first level of the TOC.
+            This class manages the events coming from the map, from the map layers and from the map layer items.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree._legendItemTemplate">
+            <summary>
+            Gets or sets the legend item template.
+            </summary>
+            <value>The legend item template.</value>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.Refresh">
+            <summary>
+            Refreshes the legend control.
+            </summary>
+            <remarks>Note : In most cases, the control is always up to date without calling the refresh method.</remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.LayerTemplate">
+            <summary>
+            Gets or sets the layer template i.e. the template used to display a layer in the legend.
+            </summary>
+            <value>The layer template.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.MapLayerTemplate">
+            <summary>
+            Gets or sets the map layer template.
+            </summary>
+            <value>The map layer template.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.ShowOnlyVisibleLayers">
+            <summary>
+            Gets or sets a value indicating whether only the visible layers are participating to the legend.
+            </summary>
+            <value>
+            	<c>true</c> if only the visible layers are participating to the legend; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.ReverseLayersOrder">
+            <summary>
+            Gets or sets a value indicating whether only the visible layers are participating to the legend.
+            </summary>
+            <value>
+            	<c>true</c> if only the visible layers are participating to the legend; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.LegendTree.Refreshed">
+            <summary>
+            Occurs when the legend is refreshed. 
+            Give the opportunity for an application to add or remove legend items.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem">
+            <summary>
+            Internal class encapsulating a layer item representing a map layer.
+            This class manages the events coming from the layer and the legend refresh process.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem.#ctor(Esri.ArcGISRuntime.Layers.Layer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem"/> class.
+            </summary>
+            <param name="layer">The layer.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem"/> class. Only useful in Design.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.MapLayerItem.Refresh">
+            <summary>
+            Refreshes the legend from infos coming from the map layer.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay">
+            <summary>
+            A control that displays a symbol.
+            <para>
+            The control creates internally the swatch by using <see cref="M:Esri.ArcGISRuntime.Symbology.Symbol.CreateSwatchAsync"/>.
+            </para>
+            <para>
+            If the symbol symbolizes a point feature, the symbol will be displayed at scale without any stretching except if the 
+            Height/Width or MaxHeight/MaxWidth are set and don't allow displaying the symbol at scale without clipping. In this case the symbol is stretched to fill 
+            the available space.
+            </para>
+            <para>If the symbol symbolizes a line or a polygon, the swatch size is based on the Height/Width or MaxHeight/MaxWidth.
+            If these properties are not set, a default 32*32 size is used instead.
+            </para>
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.OnApplyTemplate">
+            <summary>
+            Invoked whenever application code or internal processes 
+            (such as a rebuilding layout pass) call ApplyTemplate. 
+            In simplest terms, this means the method is called just 
+            before a UI element displays in your app. Override this 
+            method to influence the default post-template logic of 
+            a class.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.SymbolProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.Symbol"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.BackgroundColorProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.BackgroundColor"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.GeometryTypeProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.GeometryType"/> Dependency property.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Provides the behavior for the Measure pass of the layout cycle.
+            </summary>
+            <param name="availableSize">The available size that this object can give to child objects.</param>
+            <returns>The size that this object determines it needs during layout.</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.Symbol">
+            <summary>
+            The symbol to display.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.BackgroundColor">
+            <summary>
+            The swatch background (transparent by default)
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.Primitives.SymbolDisplay.GeometryType">
+            <summary>
+            The symbol geometry type (<see cref="F:Esri.ArcGISRuntime.Geometry.GeometryType.Unknown"/> by default).
+            <para>
+            If the geometry type is <see cref="F:Esri.ArcGISRuntime.Geometry.GeometryType.Unknown"/>, the geometry type will be deduced from the symbol type.
+            However, in some cases such as a MarkerSymbol used to symbolize a line or an area object, it may be useful to set this parameter.
+            </para>
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine">
+            <summary>
+            The ScaleLine Control generates a line representing 
+            a certain distance on the map in both Metric and US units.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.OnApplyTemplate">
+            <summary>
+            Invoked whenever application code or internal processes 
+            (such as a rebuilding layout pass) call ApplyTemplate. 
+            In simplest terms, this means the method is called just 
+            before a UI element displays in your app. Override this 
+            method to influence the default post-template logic of 
+            a class.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.ScaleProperty">
+            <summary>
+            The dependency property for the Scale property.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.OnScalePropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            The property changed event that is raised when 
+            the value of Scale property changes.
+            </summary>
+            <param name="d">ScaleLine</param>
+            <param name="e">Contains information related to the change to the Scale property.</param>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.TargetWidthProperty">
+            <summary>
+            The dependency property for the TargetWidth property.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.OnTargetWidthPropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            The property changed event that is raised when 
+            the value of TargetWidth property changes.
+            </summary>
+            <param name="d">ScaleLine</param>
+            <param name="e">Contains information related to the change to the TargetWidth property.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.Refresh">
+            <summary>
+            Refreshes the scaleline when the map extent changes.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.SetUsUnit(System.Double,System.String)">
+            <summary>
+            Sets the imperial units section of the scale line
+            </summary>
+            <param name="value">map scale in imperial units</param>
+            <param name="unit">imperial unit</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.SetMetricUnit(System.Double,System.String)">
+            <summary>
+            Sets the metric units section of the scale line
+            </summary>
+            <param name="value">map scale in metric units</param>
+            <param name="unit">metric unit</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.GetKilometer">
+            <summary>
+            1. (target_width_pixels / 96) = target_width_inches 
+            2. target_width_inches * map_scale = map_scale_inches
+            3. map_scale_inches converted to kilometers = map_scale_kilometers
+            </summary>
+            <returns>value that represents the maps scale in kilometers</returns>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.GetMeter">
+            <summary>
+            1. (target_width_pixels / 96) = target_width_inches 
+            2. target_width_inches * map_scale = map_scale_inches
+            3. map_scale_inches converted to meters = map_scale_meters
+            </summary>
+            <returns>value that represents the maps scale in meters</returns>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.GetMile">
+            <summary>
+            1. (target_width_pixels / 96) = target_width_inches 
+            2. target_width_inches * map_scale = map_scale_inches
+            3. map_scale_inches converted to miles = map_scale_miles
+            </summary>
+            <returns>value that represents the maps scale in miles</returns>        
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.GetFoot">
+            <summary>
+            1. (target_width_pixels / 96) = target_width_inches 
+            2. target_width_inches * map_scale = map_scale_inches
+            3. map_scale_inches converted to feet = map_scale_feet
+            </summary>
+            <returns>value that represents the maps scale in feet</returns>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.Scale">
+            <summary>
+            Gets or sets the scale that the ScaleLine will 
+            use to calculate scale in metric and imperial units.
+            </summary>        
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.ScaleLine.TargetWidth">
+            <summary>
+            Gets or sets the width that will be used to 
+            calculate the length of the ScaleLine
+            </summary>        
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker">
+            <summary>
+            A template picker control enables selecting feature types to add 
+            when editing a feature layer.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker"/> class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application 
+            code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.LayersProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.Layers"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemTemplate"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemsPanelProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemsPanel"/> Dependency property.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ScaleProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.Scale"/> Dependency property.
+            </summary>
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePicked">
+            <summary>
+            Occurs when a template is selected.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.Layers">
+            <summary>
+            Gets or sets the layers for which templates are displayed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemTemplate">
+            <summary>
+            Gets or sets the data template used to display each TemplatePicker item.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.ItemsPanel">
+            <summary>
+            Gets or sets the template that defines the panel that controls the layout of items.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.Scale">
+            <summary>
+            Gets or sets the scale if filtering layers by their visible scale range.
+            </summary>
+            <remarks>Typically this value has to be binded to the <see cref="P:Esri.ArcGISRuntime.Controls.MapView.Scale">MapView scale property</see></remarks>
+            <value>
+            The scale filter.
+            </value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePickedEventArgs">
+            <summary>
+            EventArgs type for <see cref="E:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePicked"/> event.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePickedEventArgs.Layer">
+            <summary>
+            Gets the feature layer of the selected template.
+            </summary>
+            <value>
+            The feature layer.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePickedEventArgs.FeatureType">
+            <summary>
+            Gets the feature sub type selected. 
+            </summary>
+            <remarks>The sub type is null when the template is not associated to a sub type
+            (for example when the templates are generated from an UniqueValueRenderer)</remarks>
+            <value>
+            The sub type of the template selected.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Controls.TemplatePicker.TemplatePickedEventArgs.FeatureTemplate">
+            <summary>
+            Gets the feature template selected.
+            </summary>
+            <value>sc
+            The feature template.
+            </value>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListener`1._weakInstance">
+            <summary>
+            WeakReference to the instance listening for the DP changed.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListener`1.#ctor(`0,System.Windows.DependencyObject,System.String)">
+            <summary>
+            Initializes a new instances of the DependencyPropertyChangedListener class.
+            </summary>
+            <param name="instance">Instance subscribing to the property changed event.</param>
+            <param name="dependencyObject">Source of the propertyChanged</param>
+            <param name="propertyName">Dependency property name</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListener`1.Detach">
+            <summary>
+            Stop listening for the dependency property changed.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListener`1.OnEventAction">
+            <summary>
+            Gets or sets the method to call when the DP changes.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListeners`1">
+            <summary>
+            Manages a set of DependencyPropertyChangedListener by source
+            </summary>
+            <typeparam name="TInstance">The type of the instance.</typeparam>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListeners`1._weakInstance">
+            <summary>
+            WeakReference to the instance listening for the DP changed.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListeners`1.Attach(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Starts listening for the DP changed of a DO
+            </summary>
+            <param name="source">The source.</param>
+            <param name="propertyName">Name of the property.</param>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.DependencyPropertyChangedListeners`1.OnEventAction">
+            <summary>
+            Gets or sets the method to call when the DP changes.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer">
+            <summary>
+            The throttle timer is useful for limiting the number of requests to a method if
+            the method is repeatedly called many times but you only want the method raised once.
+            It delays raising the method until a set interval, and any previous calls to the
+            actions in that interval will be cancelled.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer.#ctor(System.Int32,System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer"/> class.
+            </summary>
+            <param name="milliseconds">Milliseconds to throttle.</param>
+            <param name="handler">The delegate to invoke.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer.Invoke">
+            <summary>
+            Invokes this instance (note that this will happen asynchronously and delayed).
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer.Cancel">
+            <summary>
+            Cancels this timer if running.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.ThrottleTimer.Action">
+            <summary>
+            Delegate to Invoke.
+            </summary>
+            <value>The action.</value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3">
+            <summary>
+            Implements a weak event listener that allows the owner to be garbage
+            collected if its only remaining link is an event handler.
+            </summary>
+            <typeparam name="TInstance">Type of instance listening for the event.</typeparam>
+            <typeparam name="TSource">Type of source for the event.</typeparam>
+            <typeparam name="TEventArgs">Type of event arguments for the event.</typeparam>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3._weakInstance">
+            <summary>
+            WeakReference to the instance listening for the event.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3.#ctor(`0)">
+            <summary>
+            Initializes a new instances of the WeakEventListener class.
+            </summary>
+            <param name="instance">Instance subscribing to the event.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3.OnEvent(`1,`2)">
+            <summary>
+            Handler for the subscribed event calls OnEventAction to handle it.
+            </summary>
+            <param name="source">Event source.</param>
+            <param name="eventArgs">Event arguments.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3.Detach">
+            <summary>
+            Detaches from the subscribed event.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3.OnEventAction">
+            <summary>
+            Gets or sets the method to call when the event fires.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListener`3.OnDetachAction">
+            <summary>
+            Gets or sets the method to call when detaching from the event.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListeners`1">
+            <summary>
+            Manages a collection of WeakEventListener for listening for events coming from multiple sources.
+            </summary>
+            <typeparam name="TInstance">The type of the instance.</typeparam>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListeners`1._weakInstance">
+            <summary>
+            WeakReference to the instance listening for the event.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListeners`1.Attach(System.Object,System.Action{System.EventHandler},System.Action{System.EventHandler})">
+            <summary>
+            Attaches the specified source.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="subscription">The subscription.</param>
+            <param name="unsubscription">The unsubscription.</param>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Toolkit.Internal.WeakEventListeners`1.OnEventAction">
+            <summary>
+            Gets or sets the method to call when the event fires.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Toolkit.ValueConverters.VisibilityConverter">
+            <summary>
+            *FOR INTERNAL USE ONLY* Convert a string or a boolean to a Visibility.
+            </summary>
+            <exclude/>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.ValueConverters.VisibilityConverter.System#Windows#Data#IValueConverter#Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the source data before passing it to the target for display in the UI.
+            </summary>
+            <param name="value">The source data being passed to the target.</param>
+            <param name="targetType">The <see cref="T:System.Type"/> of data expected by the target dependency property.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the target dependency property.
+            </returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Toolkit.ValueConverters.VisibilityConverter.System#Windows#Data#IValueConverter#ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Modifies the target data before passing it to the source object.  This method is called only in <see cref="F:System.Windows.Data.BindingMode.TwoWay"/> bindings.
+            </summary>
+            <param name="value">The target data being passed to the source.</param>
+            <param name="targetType">The <see cref="T:System.Type"/> of data expected by the source object.</param>
+            <param name="parameter">An optional parameter to be used in the converter logic.</param>
+            <param name="culture">The culture of the conversion.</param>
+            <returns>
+            The value to be passed to the source object.
+            </returns>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

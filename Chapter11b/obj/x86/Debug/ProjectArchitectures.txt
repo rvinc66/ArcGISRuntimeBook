@@ -1,0 +1,1 @@
+C:\AppDev\VS2013\Book\Chapter11b\Chapter11b.csproj;x86

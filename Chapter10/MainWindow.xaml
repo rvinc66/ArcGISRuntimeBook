@@ -1,0 +1,28 @@
+﻿<Window x:Class="Chapter10.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:locator="clr-namespace:Chapter10.ViewModels"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:behave="clr-namespace:Chapter10.Behaviors" 
+        xmlns:uc="clr-namespace:Chapter10.UserControls"
+		Title="MainWindow" 
+		Height="600" 
+		Width="800">
+    <Grid DataContext="{Binding  Source={StaticResource Locator}, Path=MainViewModel}">       
+        <esri:MapView x:Name="MyMapView"
+					  LayerLoaded="MyMapView_LayerLoaded">
+
+            <i:Interaction.Behaviors>
+                <behave:MapViewBehavior/>
+            </i:Interaction.Behaviors>
+
+            <esri:Map InitialViewpoint="-12004036,4652780,-11735714,4808810, 3857">
+                <!--<esri:ArcGISTiledMapServiceLayer ID="TopoMapLayer"
+                    ServiceUri="http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer" />-->
+            </esri:Map>
+        </esri:MapView>
+        
+        <uc:ViewshedUserControl></uc:ViewshedUserControl>
+    </Grid>
+</Window>

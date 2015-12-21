@@ -1,0 +1,135 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 5.5 5.5.3.2642 Release
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl _3___Default
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0 0 0
+illum 2
+Ns 10
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\f-16-body.psd
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\f-16-body.psd
+map_Ns 
+
+newmtl _6___Default
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0 0 0
+illum 2
+Ns 10
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\f-16-weels.psd
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\f-16-weels.psd
+map_Ns 
+
+newmtl Explorer_Default
+Ka 0.117647 0.117647 0.117647
+Kd 0.752941 0.752941 0.752941
+Ks 0.752941 0.752941 0.752941
+illum 2
+Ns 8
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl _4___Default
+Ka 0.12549 0.14902 0.235294
+Kd 0.12549 0.14902 0.235294
+Ks 0.837 0.837 0.837
+illum 2
+Ns 29
+d 0.48
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl _5___Default
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0 0 0
+illum 2
+Ns 10
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\F-16-misels.psd
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\F-16-misels.psd
+map_Ns 
+
+newmtl Material__324
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0 0 0
+illum 2
+Ns 10
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\cockpit.psd
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\cockpit.psd
+map_Ns 
+
+newmtl _4___Default2
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0.801 0.801 0.801
+illum 2
+Ns 35
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\seats.psd
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\seats.psd
+map_Ns 
+
+newmtl turbine
+Ka 0.588235 0.588235 0.588235
+Kd 0.588235 0.588235 0.588235
+Ks 0.972 0.972 0.972
+illum 2
+Ns 34
+map_Kd C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\Desert Texture 1\\turbine.jpg
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA C:\\Users\\Acharya\\Desktop\\3DS Max files\\Su 27 flanker\\textures\\Desert Texture 1\\turbine.jpg
+map_Ns 

@@ -1,0 +1,29 @@
+﻿<Window x:Class="Chapter3a.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:behave="clr-namespace:Chapter3a.Behaviors" 
+         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:locator="clr-namespace:Chapter3a.ViewModels"
+		Height="600" 
+		Width="800">
+  
+    <Grid DataContext="{Binding  Source={StaticResource Locator}, Path=MainViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <esri:MapView x:Name="MyMapView"   Grid.Row="0"  IsLogoVisible="False" LayerLoaded="MyMapView_LayerLoaded">
+
+            <i:Interaction.Behaviors>
+                <behave:MapViewBehavior/>
+            </i:Interaction.Behaviors>
+            
+            <esri:Map x:Name="theMap" >
+         
+            </esri:Map>
+        </esri:MapView>
+    </Grid>
+</Window>

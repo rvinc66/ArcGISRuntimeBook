@@ -1,0 +1,79 @@
+﻿<Window x:Class="Chapter8.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:behave="clr-namespace:Chapter8.Behaviors"
+         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:locator="clr-namespace:Chapter8.ViewModels"
+        xmlns:uc="clr-namespace:Chapter8.UserControls"
+       xmlns:toolkit="clr-namespace:Esri.ArcGISRuntime.Toolkit.Controls;assembly=Esri.ArcGISRuntime.Toolkit"
+		Height="600" 
+		Width="800">
+
+    <Grid DataContext="{Binding  Source={StaticResource Locator}, Path=MainViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <esri:MapView x:Name="MyMapView"   Grid.Row="0"  IsLogoVisible="False" LayerLoaded="MyMapView_LayerLoaded">
+
+            <i:Interaction.Behaviors>
+                <behave:MapViewBehavior/>
+            </i:Interaction.Behaviors>
+
+            <esri:Map x:Name="theMap" >
+
+            </esri:Map>
+
+            <!-- Add a UIElementCollection that will display on the MapView when the user clicks on a object in the FeatureLayer (aka. a MapTip). -->
+            <esri:MapView.Overlays>
+                <!-- OverlayItemsControl for the MapView. -->
+                <esri:OverlayItemsControl x:Name="overlayItemsControl">
+                    <Border 
+                        CornerRadius="10" 
+                        BorderBrush="Black" 
+                        Margin="0,0,25,25" Visibility="Hidden"
+                        BorderThickness="2" Background="#995C90B2" >
+
+                        <StackPanel Orientation="Vertical" Margin="5,10,18,15">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ID: " FontWeight="Normal" Height="20" Foreground="White"/>
+                                <TextBlock Text="{Binding [POST_ID]}" FontWeight="Normal" 
+                                        Foreground="White"  Height="20"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Street: " FontWeight="Normal" Height="20" Foreground="White"/>
+                                <TextBlock Text="{Binding [STREETNAME]}" FontWeight="Normal" 
+                                        Foreground="White"  Height="20"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </esri:OverlayItemsControl>
+            </esri:MapView.Overlays>
+        </esri:MapView>
+
+        <Border  BorderBrush="Black" BorderThickness="1"   Margin="30" Padding="10,20,20,20"
+                         HorizontalAlignment="Right" VerticalAlignment="Top">
+
+            <Border.Effect>
+                <DropShadowEffect />
+            </Border.Effect>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <toolkit:Legend Foreground="White"  Layers="{Binding Map.Layers, ElementName=MyMapView}"  ReverseLayersOrder="False" >
+                </toolkit:Legend>
+            </ScrollViewer>
+        </Border>
+        <StackPanel VerticalAlignment="Center">
+            <Button Content="Add Stops" Width="100" Height="40" HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"  Command="{Binding AddStopsRelayCommand}">
+            </Button>
+        </StackPanel>
+        <toolkit:ScaleLine Scale="{Binding ElementName=MyMapView, Path=Scale}"
+						   HorizontalAlignment="Right" VerticalAlignment="Bottom"
+						   Margin="10" />
+        <uc:CoordinateDisplayUserControl VerticalAlignment="Top"></uc:CoordinateDisplayUserControl>
+    </Grid>
+</Window>

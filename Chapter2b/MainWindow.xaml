@@ -1,0 +1,41 @@
+﻿<Window x:Class="Chapter2b.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        
+        xmlns:locator="clr-namespace:Chapter2b.ViewModels"
+		Height="600" 
+		Width="800">
+
+    <Grid DataContext="{Binding  Source={StaticResource Locator}, Path=MainViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <esri:MapView x:Name="MyMapView" Grid.Row="0"  LayerLoaded="MyMapView_LayerLoaded">
+            <esri:Map x:Name="theMap">
+                <esri:ArcGISTiledMapServiceLayer ID="Basemap"
+					ServiceUri="{Binding MainViewModel.BasemapUri, Source={StaticResource Locator}}"/>
+                <esri:ArcGISDynamicMapServiceLayer ID="USA" 
+                          ServiceUri="{Binding MainViewModel.USAUri, Source={StaticResource Locator}}"/>
+            </esri:Map>
+        </esri:MapView>
+
+        <TextBlock  Name="Search" Background="#77000000" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Padding="5" Foreground="White" >
+            <Run>Search for  </Run>
+            <TextBox Name="SearchTextBox" Text="{Binding SearchText}"></TextBox>
+            <Run>  in the Cities, Counties or States layer. </Run>
+            <Button Content="Find" Width="30" Command="{Binding SearchRelayCommand}" 
+                    CommandParameter="{Binding Path=SpatialReference.Wkid,  ElementName=MyMapView}" >
+            </Button>
+        </TextBlock>
+
+        <DataGrid Name="MyDataGrid"  ItemsSource="{Binding Path=GridDataResults, Mode=TwoWay, 
+                  UpdateSourceTrigger=PropertyChanged}"  AutoGenerateColumns="True" 
+                  Grid.Row="2" Height="200" ></DataGrid>
+    </Grid>
+</Window>
