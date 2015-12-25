@@ -44,8 +44,6 @@ namespace Chapter11a
             // search for the search text
             mainViewModel.SearchRelayCommand.Execute("4326");
 
-            //Thread.Sleep(3000);
-
             var firstTask = new Task(() =>
                  mainViewModel.SearchRelayCommand.Execute("4326"));
 
