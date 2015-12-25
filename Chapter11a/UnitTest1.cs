@@ -42,11 +42,15 @@ namespace Chapter11a
             // search string
             mainViewModel.SearchText = "Lancaster";
             // search for the search text
+            mainViewModel.SearchRelayCommand.Execute("4326");
+
+            //Thread.Sleep(3000);
 
             var firstTask = new Task(() =>
                  mainViewModel.SearchRelayCommand.Execute("4326"));
 
             firstTask.Wait(3000);
+
             Assert.IsNotNull(mainViewModel, "Null mainViewModel");
             Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
             Assert.IsNotNull(mainViewModel.GridDataResults.Count, "Null Count");
