@@ -201,8 +201,8 @@ namespace Chapter4a.ViewModels
             findParameters.SearchText = this.SearchText;
             findParameters.Contains = true;
 
-            FindResult findResult = 
-                     findTask.ExecuteAsync(findParameters).Result;
+            FindResult findResult = await
+                     findTask.ExecuteAsync(findParameters);
 
             var foundCities = 0;
             var foundCounties = 0;
