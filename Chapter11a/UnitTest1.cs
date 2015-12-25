@@ -42,9 +42,16 @@ namespace Chapter11a
             // search string
             mainViewModel.SearchText = "Lancaster";
             // search for the search text
-            mainViewModel.SearchRelayCommand.Execute("4326");
-            // assert
+
+            var firstTask = new Task(() =>
+                 mainViewModel.SearchRelayCommand.Execute("4326"));
+
+            firstTask.Wait(20000);
+            Assert.IsNotNull(mainViewModel, "Null mainViewModel");
+            Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
+            Assert.IsNotNull(mainViewModel.GridDataResults.Count, "Null Count");
             Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
+
         }
     }
 }
