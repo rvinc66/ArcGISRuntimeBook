@@ -46,7 +46,7 @@ namespace Chapter11a
             var firstTask = new Task(() =>
                  mainViewModel.SearchRelayCommand.Execute("4326"));
 
-            firstTask.Wait(20000);
+            firstTask.Wait(5000);
             Assert.IsNotNull(mainViewModel, "Null mainViewModel");
             Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
             Assert.IsNotNull(mainViewModel.GridDataResults.Count, "Null Count");
