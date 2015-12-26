@@ -31,6 +31,7 @@ namespace Chapter11a
         [TestMethod]
         public  async Task GetSearchCount_CountFeatures_NineFeatureFound()
         {
+
             // instantiate the locator so that our view model is created
             locator = new ViewModelLocator();
             // get the MainViewModel
@@ -42,17 +43,17 @@ namespace Chapter11a
 
             // UNCOMMENT THE FOLLOWING LINES 
 
-            //// Arrange
-            //// search string
-            //mainViewModel.SearchText = "Lancaster";
-            //// run the search async
-            //var task = mainViewModel.SearchRelayCommand.ExecuteAsync(4326);
-            //task.Wait(); // wait
+            // Arrange
+            // search string
+            mainViewModel.SearchText = "Lancaster";
+            // run the search async
+            var task = mainViewModel.SearchRelayCommand.ExecuteAsync(4326);
+            task.Wait(); // wait
 
-            //// Assert
-            //Assert.IsNotNull(mainViewModel, "Null mainViewModel");
-            //Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
-            //Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
+            // Assert
+            Assert.IsNotNull(mainViewModel, "Null mainViewModel");
+            Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
+            Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
             
         }
     }
