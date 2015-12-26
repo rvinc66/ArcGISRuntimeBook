@@ -40,17 +40,19 @@ namespace Chapter11a
             // send the MapView to the MainViewModel
             Messenger.Default.Send<MapView>(mapView);
 
-            // Arrange
-            // search string
-            mainViewModel.SearchText = "Lancaster";
-            // run the search async
-            var task = mainViewModel.SearchRelayCommand.ExecuteAsync(4326);
-            task.Wait(); // wait
+            // UNCOMMENT THE FOLLOWING LINES 
 
-            // Assert
-            Assert.IsNotNull(mainViewModel, "Null mainViewModel");
-            Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
-            Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
+            //// Arrange
+            //// search string
+            //mainViewModel.SearchText = "Lancaster";
+            //// run the search async
+            //var task = mainViewModel.SearchRelayCommand.ExecuteAsync(4326);
+            //task.Wait(); // wait
+
+            //// Assert
+            //Assert.IsNotNull(mainViewModel, "Null mainViewModel");
+            //Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
+            //Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
             
         }
     }
