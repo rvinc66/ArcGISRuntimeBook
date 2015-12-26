@@ -29,7 +29,7 @@ namespace Chapter11a
         }
 
         [TestMethod]
-        public  void GetSearchCount_CountFeatures_NineFeatureFound()
+        public  async Task GetSearchCount_CountFeatures_NineFeatureFound()
         {
             // instantiate the locator so that our view model is created
             locator = new ViewModelLocator();
@@ -39,17 +39,17 @@ namespace Chapter11a
             MapView mapView = new MapView();
             // send the MapView to the MainViewModel
             Messenger.Default.Send<MapView>(mapView);
+
+            // Arrange
             // search string
             mainViewModel.SearchText = "Lancaster";
-            
-            // Act. search for the search text
-            mainViewModel.Search(4326);
+            // run the search async
+            var task = mainViewModel.SearchRelayCommand.ExecuteAsync(4326);
+            task.Wait(); // wait
 
-            Thread.Sleep(6000);
-
+            // Assert
             Assert.IsNotNull(mainViewModel, "Null mainViewModel");
             Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
-            Assert.IsNotNull(mainViewModel.GridDataResults.Count, "Null Count");
             Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
             
         }
