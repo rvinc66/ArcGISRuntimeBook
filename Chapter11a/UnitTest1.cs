@@ -41,19 +41,17 @@ namespace Chapter11a
             Messenger.Default.Send<MapView>(mapView);
             // search string
             mainViewModel.SearchText = "Lancaster";
-            // search for the search text
-            mainViewModel.SearchRelayCommand.Execute("4326");
+            
+            // Act. search for the search text
+            mainViewModel.Search(4326);
 
-            var firstTask = new Task(() =>
-                 mainViewModel.SearchRelayCommand.Execute("4326"));
-
-            firstTask.Wait(3000);
+            Thread.Sleep(6000);
 
             Assert.IsNotNull(mainViewModel, "Null mainViewModel");
             Assert.IsNotNull(mainViewModel.GridDataResults, "Null GridDataResults");
             Assert.IsNotNull(mainViewModel.GridDataResults.Count, "Null Count");
             Assert.AreEqual(9, mainViewModel.GridDataResults.Count);
-
+            
         }
     }
 }

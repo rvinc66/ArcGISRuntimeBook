@@ -54,7 +54,6 @@ C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\UserControls\CameraUserControl.baml
 C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\Chapter4a.g.resources
 C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\Chapter4a.exe
 C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\Chapter4a.pdb
-C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\Chapter4a.csprojResolveAssemblyReference.cache
 C:\ArcGISRuntimBook\Chapter4a\bin\Debug\Chapter4a.exe
 C:\ArcGISRuntimBook\Chapter4a\bin\Debug\Chapter4a.pdb
 C:\ArcGISRuntimBook\Chapter4a\bin\Debug\Esri.ArcGISRuntime.dll
