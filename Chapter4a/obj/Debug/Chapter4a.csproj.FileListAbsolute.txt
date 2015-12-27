@@ -111,3 +111,4 @@ C:\ArcGISRuntimBook\Chapter4a\obj\Debug\UserControls\CameraUserControl.baml
 C:\ArcGISRuntimBook\Chapter4a\obj\Debug\Chapter4a.g.resources
 C:\ArcGISRuntimBook\Chapter4a\obj\Debug\Chapter4a.exe
 C:\ArcGISRuntimBook\Chapter4a\obj\Debug\Chapter4a.pdb
+C:\ArcGISRuntimeBook\Chapter4a\obj\Debug\Chapter4a.csprojResolveAssemblyReference.cache

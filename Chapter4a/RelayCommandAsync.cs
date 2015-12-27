@@ -62,7 +62,7 @@ namespace MvvmHelper
             remove { _internalCommand.CanExecuteChanged -= value; }
         }
 
-        public RelayCommandAsync(Func<T, Task> executeMethod, Predicate<T> canExecuteMethod)
+        public RelayCommandAsync(Func<T, Task> executeMethod, Func<T, bool> canExecuteMethod)
         {
             if (executeMethod == null)
             {
@@ -70,7 +70,7 @@ namespace MvvmHelper
             }
 
             _executeMethod = executeMethod;
-            //_internalCommand = new RelayCommand<T>(_ => { }, canExecuteMethod);
+            _internalCommand = new RelayCommand<T>(_ => { }, canExecuteMethod);
         }
 
         public RelayCommandAsync(Func<T, Task> executeMethod) : this(executeMethod, _ => true) { }
@@ -92,7 +92,7 @@ namespace MvvmHelper
 
         public bool CanExecute(object parameter)
         {
-            return _internalCommand.CanExecute((T)parameter);
+            return _internalCommand.CanExecute(parameter);
         }
 
         public void RaiseCanExecuteChanged()
