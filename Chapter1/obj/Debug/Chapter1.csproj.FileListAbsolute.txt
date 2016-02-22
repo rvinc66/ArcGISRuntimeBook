@@ -76,3 +76,13 @@ C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.exe
 C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.pdb
 C:\ArcGISRuntimBook\Chapter1\obj\Debug\Chapter1.exe
 C:\ArcGISRuntimBook\Chapter1\obj\Debug\Chapter1.pdb
+C:\ArcGISRuntimeBook\Chapter1\bin\Debug\Chapter1.exe
+C:\ArcGISRuntimeBook\Chapter1\bin\Debug\Chapter1.pdb
+C:\ArcGISRuntimeBook\Chapter1\bin\Debug\Esri.ArcGISRuntime.dll
+C:\ArcGISRuntimeBook\Chapter1\bin\Debug\Esri.ArcGISRuntime.xml
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.csprojResolveAssemblyReference.cache
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\MainWindow.baml
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\MainWindow.g.cs
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\App.g.cs
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1_MarkupCompile.cache
+C:\ArcGISRuntimeBook\Chapter1\obj\Debug\Chapter1.g.resources
