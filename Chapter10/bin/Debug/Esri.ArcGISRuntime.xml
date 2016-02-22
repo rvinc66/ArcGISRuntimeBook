@@ -42,6 +42,11 @@
             <c>true</c> if this instance is UI loaded; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.DrawSurface.InRemoteDesktop">
+            <summary>
+            Gets a value indicating whether the drawing surface is rendered in remote desktop.
+            </summary>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Controls.DrawSurfaceWinDesktop.#ctor">
             <summary>
             Create this on the UI thread to hold the surface used for rendering
@@ -101,7 +106,7 @@
             After updating the map image, it needs to be invalidated to ensure it gets refreshed
             </summary>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Controls.DrawSurfaceWinDesktop.CoreLockSurfaceResponse(System.IntPtr)">
+        <member name="M:Esri.ArcGISRuntime.Controls.DrawSurfaceWinDesktop.CoreLockSurfaceResponse(System.IntPtr,System.Boolean)">
             <summary>
             After a lock surfce request, the code must call the lock surface respond to unlock the draw thread to proceed
             </summary>
@@ -2205,12 +2210,6 @@
             <param name="e">A <see cref="T:System.Windows.Input.ManipulationStartingEventArgs" />
             that contains the event data.</param>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Controls.SceneView.OnManipulationInertiaStarting(System.Windows.Input.ManipulationInertiaStartingEventArgs)">
-            <summary>
-            Called when the <see cref="E:System.Windows.UIElement.ManipulationInertiaStarting" /> event occurs.
-            </summary>
-            <param name="e">The data for the event.</param>
-        </member>
         <member name="M:Esri.ArcGISRuntime.Controls.SceneView.OnManipulationDelta(System.Windows.Input.ManipulationDeltaEventArgs)">
             <summary>
             Called before the ManipulationDelta event occurs.
@@ -2309,10 +2308,33 @@
             </summary>
             <param name="timeOfYear">The date.</param>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Controls.SceneView.ScreenToLocationAsync(System.Windows.Point)">
+            <summary>
+            Async method to convert a screen point relative to the upper left of the SceneView into a location 
+            accounting for 3D features within the Scene.
+            </summary>
+            <remarks>
+            This method checks for intersection between the input screen point and visible 3D features on the Scene.
+            It returns a point with X, Y and Z values matching the intersection point. If the input point does not
+            intersect a visible 3D feature, the Scene <see cref="P:Esri.ArcGISRuntime.Controls.Scene.Surface">Surface
+            </see> is used to retrieve the point values. If the input point does not intersect the Scene Surface or 
+            any visible 3D features a null value is returned.
+            
+            This method differs from <see cref="M:Esri.ArcGISRuntime.Controls.SceneView.ScreenToLocation(System.Windows.Point)"/> in that the latter only uses the Scene Surface and 
+            ignores visible 3D features. The algorithm is inherently slower than ScreenToLocation and is therefore an 
+            async operation.
+            </remarks>
+            <param name="screenPoint">Screen point relative to the upper left</param>
+            <returns>MapPoint</returns>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Controls.SceneView.ScreenToLocation(System.Windows.Point)">
             <summary>
             Converts a screen point relative to the upper left of the Scene into a location on the Scene.
             </summary>
+            <remarks>
+            This method uses the Scene Surface to retrieve the X, Y and Z values for the returned point. Unlike
+            <see cref="M:Esri.ArcGISRuntime.Controls.SceneView.ScreenToLocationAsync(System.Windows.Point)"/>, visible 3D features on the Scene are ignored.
+            </remarks>
             <param name="screenPoint">Screen point relative to the upper left</param>
             <returns>MapPoint</returns>
         </member>
@@ -2363,6 +2385,11 @@
             In other words, when labeling is null, use the default values of ViewLabelProperties' properties.
             
             Instance shouldn't ever be modified.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.SceneView.AtmosphereEffectProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.AtmosphereEffect"/> dependency property
             </summary>
         </member>
         <member name="M:Esri.ArcGISRuntime.Controls.SceneView.SetViewAsync(Esri.ArcGISRuntime.Controls.Viewpoint,System.Double)">
@@ -2421,22 +2448,6 @@
             </remarks>
             <param name="camera">Defines the perspective of a scene.</param>
             <exception cref="T:System.ArgumentNullException">camera cannot be null.</exception>
-            <example>
-            <para>
-            Demonstrates drawing a Polyline in a SceneView and then navigating/animating along that Polyline with a Camera.
-            </para>
-            <para>
-            <img border="0" alt="Visual illustration of a freehand Polyline traced around the coast of Africa for which a 3D animation will follow." src="../media/Camera_FollowPolyline_ViaSetViewAsync.png"/>
-            </para>
-            <code language="XAML" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml"/>
-            <para>
-            <b>SPECIAL NOTE:</b> The XAML displayed above comes from a C# project. If you are a VB.NET developer, 
-            you will need to modify the text for the x:Class namespace from "Camera_FollowPolyline_ViaSetViewAsync.MainWindow" to
-            be just "MainWindow".
-            </para>
-            <code language="CSHARP" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml.cs"/>
-            <code language="VBNET" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\VBNet\MainWindow.xaml.vb"/>
-            </example>
         </member>
         <member name="M:Esri.ArcGISRuntime.Controls.SceneView.SetViewAsync(Esri.ArcGISRuntime.Controls.Camera)">
             <summary>
@@ -2465,22 +2476,6 @@
             <param name="duration">Duration of the animation.</param>
             <returns><c>True</c> if the set view animation completed, <c>false</c> if it was interrupted by another view navigation.</returns>
             <exception cref="T:System.ArgumentNullException">camera cannot be null.</exception>
-            <example>
-            <para>
-            Demonstrates drawing a Polyline in a SceneView and then navigating/animating along that Polyline with a Camera.
-            </para>
-            <para>
-            <img border="0" alt="Visual illustration of a freehand Polyline traced around the coast of Africa for which a 3D animation will follow." src="../media/Camera_FollowPolyline_ViaSetViewAsync.png"/>
-            </para>
-            <code language="XAML" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml"/>
-            <para>
-            <b>SPECIAL NOTE:</b> The XAML displayed above comes from a C# project. If you are a VB.NET developer, 
-            you will need to modify the text for the x:Class namespace from "Camera_FollowPolyline_ViaSetViewAsync.MainWindow" to
-            be just "MainWindow".
-            </para>
-            <code language="CSHARP" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml.cs"/>
-            <code language="VBNET" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\VBNet\MainWindow.xaml.vb"/>
-            </example>
         </member>
         <member name="M:Esri.ArcGISRuntime.Controls.SceneView.SetViewAsync(Esri.ArcGISRuntime.Controls.Camera,System.TimeSpan,System.Boolean)">
             <summary>
@@ -2538,9 +2533,21 @@
             To change the SceneView Viewpoint, you can use the SetViewAsync method available on the SceneView.
             </remarks>
         </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.SceneView.InteractionOptionsProperty">
+            <summary>
+            Identifies the <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.InteractionOptions"/> property
+            </summary>
+        </member>
         <member name="F:Esri.ArcGISRuntime.Controls.SceneView.ElevationExaggerationProperty">
             <summary>
             Identifies the <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.ElevationExaggeration"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneView.RenderingTask">
+            <summary>
+            Task that runs as long as rendering is active (between OnSurfaceLoaded and OnSurfaceUnloaded).
+            This task may be used as a signal for when rendering stops. Currently used by ScreenToLocationAsync 
+            with Task.WhenAny to cancel outstanding requests when the map is pasued.
             </summary>
         </member>
         <member name="E:Esri.ArcGISRuntime.Controls.SceneView.CameraChanged">
@@ -2569,6 +2576,24 @@
             <summary>
             Contains properties controlling labeling.
             </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneView.AtmosphereEffect">
+            <summary>
+            Gets or sets the effect that defines the Scene's atmosphere.
+            <see cref="T:Esri.ArcGISRuntime.Controls.SceneAtmosphereEffect"/>
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneView.DrawStatus">
+            <summary>
+            Gets the current state of drawing the Scene.
+            <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.DrawStatus"/>
+            </summary>		
+        </member>
+        <member name="E:Esri.ArcGISRuntime.Controls.SceneView.DrawStatusChanged">
+            <summary>
+            Occurs when the status for drawing the Scene changed.
+            </summary>
+            <seealso cref="P:Esri.ArcGISRuntime.Controls.SceneView.DrawStatus"/>
         </member>
         <member name="E:Esri.ArcGISRuntime.Controls.SceneView.SceneViewTapped">
             <summary>
@@ -2623,6 +2648,11 @@
             <summary>
             Indicates whether the wrap around feature is currently active. 
             This always returns true in a SceneView.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneView.InteractionOptions">
+            <summary>
+            Gets or sets the <see cref="T:Esri.ArcGISRuntime.Controls.SceneInteractionOptions"/> instance used to specify the SceneView's interaction behavior
             </summary>
         </member>
         <member name="P:Esri.ArcGISRuntime.Controls.SceneView.ElevationExaggeration">
@@ -5987,6 +6017,11 @@
             Gets the version.
             </summary>
         </member>
+        <member name="P:Esri.ArcGISRuntime.ArcGISServices.Store.Extent">
+            <summary>
+            Gets the full extent of the feature service.
+            </summary>
+        </member>
         <member name="P:Esri.ArcGISRuntime.ArcGISServices.Store.TextureEncoding">
             <summary>
             Gets the texture encoding.
@@ -6373,22 +6408,6 @@
             perspective of the Earth. 
             </para>
             </remarks>
-            <example>
-            <para>
-            Demonstrates drawing a Polyline in a SceneView and then navigating/animating along that Polyline with a Camera.
-            </para>
-            <para>
-            <img border="0" alt="Visual illustration of a freehand Polyline traced around the coast of Africa for which a 3D animation will follow." src="../media/Camera_FollowPolyline_ViaSetViewAsync.png"/>
-            </para>
-            <code language="XAML" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml"/>
-            <para>
-            <b>SPECIAL NOTE:</b> The XAML displayed above comes from a C# project. If you are a VB.NET developer, 
-            you will need to modify the text for the x:Class namespace from "Camera_FollowPolyline_ViaSetViewAsync.MainWindow" to
-            be just "MainWindow".
-            </para>
-            <code language="CSHARP" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\CSharp\MainWindow.xaml.cs"/>
-            <code language="VBNET" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_FollowPolyline_ViaSetViewAsync\VBNet\MainWindow.xaml.vb"/>
-            </example>
         </member>
         <member name="M:Esri.ArcGISRuntime.Controls.Camera.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)">
             <summary>
@@ -6411,6 +6430,14 @@
             <param name="pitch">The angle of pitch applied to the camera with rotation around the Y-axis in an ENU.</param>
             <exception cref="T:System.ArgumentNullException">location is required and cannot be null.</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">pitch must be a value between 0 and 180.</exception>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Controls.Camera.#ctor(Esri.ArcGISRuntime.Geometry.Envelope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Controls.Camera"/> class.
+            </summary>
+            <param name="extent">The extent where camera is zoomed toward.</param>
+            <exception cref="T:System.ArgumentNullException">extent cannot be null or empty.</exception>
+            <exception cref="T:System.ArgumentException">extent cannot be null or empty.</exception>
         </member>
         <member name="M:Esri.ArcGISRuntime.Controls.Camera.SetLocation(Esri.ArcGISRuntime.Geometry.MapPoint)">
             <summary>
@@ -6760,43 +6787,39 @@
             <code language="VBNET" removeRegionMarkers="true" source="C:\LibRef\VS_Projects\SandCastle\WinDesktop\Samples\Camera_Properties\VBNet\MainWindow.xaml.vb"/>
             </example>
         </member>
-        <member name="T:Esri.ArcGISRuntime.Controls.RotationSceneOptions">
+        <member name="T:Esri.ArcGISRuntime.Controls.InteractionInputs">
             <summary>
-            Provides options for specifying the rotation behavior of <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> instances
+            Device that can be used to interact with a <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> object.
             </summary>
         </member>
-        <member name="T:Esri.ArcGISRuntime.Controls.RotationOptions">
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.None">
             <summary>
-            Provides options for specifying the rotation behavior of <see cref="T:Esri.ArcGISRuntime.Controls.MapView"/> instances
+            None of the supported interactions inputs.
             </summary>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Controls.RotationOptions.OnPropertyChanged(System.String)">
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.Keyboard">
             <summary>
-            Called when RotationOptions property changes.
-            </summary>
-            <param name="propertyName">Name of the property.</param>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.RotationOptions.IsEnabled">
-            <summary>
-            Gets or sets whether rotation is enabled on any associated <see cref="T:Esri.ArcGISRuntime.Controls.MapView"/> objects
+            Keyboard.
             </summary>
         </member>
-        <member name="E:Esri.ArcGISRuntime.Controls.RotationOptions.PropertyChanged">
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.Mouse">
             <summary>
-            Occurs when a property value changes
+            Mouse.
             </summary>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Controls.RotationSceneOptions.#ctor">
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.Stylus">
             <summary>
-            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Controls.RotationSceneOptions"/> class.
+            Stylus (Pen).
             </summary>
-            <remarks>
-            Enables rotation by default for 3D
-            </remarks>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.RotationSceneOptions.IsRotationInverted">
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.Touch">
             <summary>
-            Gets or sets whether the rotation is inverted on the scene.
+            Touch.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.InteractionInputs.All">
+            <summary>
+            All the supported interactions inputs (Keyboard | Mouse | Stylus | Touch).
             </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Controls.SceneInteractionOptions">
@@ -6809,39 +6832,37 @@
             Creates a new instance of the <see cref="T:Esri.ArcGISRuntime.Controls.SceneInteractionOptions"/> class
             </summary>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.IsEnabled">
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.EnabledInputs">
             <summary>
-            Gets or sets whether interaction is enabled on an associated <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> object
+            Sets which interaction input(s) is(are) enabled for a on an associated <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> object
             </summary>
+            <remarks>
+            Several inputs can be specified at once. For example to enable Mouse and Keyboard interactions only:
+            EnabledInputs = InteractionInputs.Keyboard | InteractionInputs.Mouse;
+            </remarks>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.ZoomOptions">
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.ZoomFactor">
             <summary>
-            Gets or sets the <see cref="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.ZoomOptions"/> instance used to specify zoom behavior
+            Gets or sets factor used for default zoom interactions.
             </summary>
+            <remarks>
+            The ZoomFactor needs to be positive and not null. A ZoomFactor of 1 will disable all the default zoom interactions.
+            A ZoomFactor of 2 will zoom in by half the distance seperating the Camera from the selected point.
+            A ZoomFactor of 0.5 will zoom out by twice the distance seperating the Camera from the selected point.
+            </remarks>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.RotationOptions">
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.FlickInertia">
             <summary>
-            Gets or sets the <see cref="T:Esri.ArcGISRuntime.Controls.RotationSceneOptions"/> instance used to specify rotation behavior
+            Gets or sets the flick inertia that occurs at the end of a pan.
             </summary>
+            <remarks>
+            FlickInertia is a value from 0 to double.MaxValue. A value of 0 disables flick interactions.
+            Greater values mean longer flicks, smaller values mean shorter flicks.  The default is 50.
+            </remarks>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.PanOptions">
+        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.MouseWheelZoomInDirection">
             <summary>
-            Gets or sets the <see cref="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.PanOptions"/> instance used to specify pan behavior
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.HeadingOptions">
-            <summary>
-            Gets or sets the <see cref="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.HeadingOptions"/> instance used to specify heading behavior for the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.PitchOptions">
-            <summary>
-            Gets or sets the <see cref="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.PitchOptions"/> instance used to specify pitch behavior for the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.ElevationOptions">
-            <summary>
-            Gets or sets the <see cref="P:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.ElevationOptions"/> instance used to specify pitch behavior for the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>
+            Gets or sets which mouse wheel direction zooms in
             </summary>
         </member>
         <member name="E:Esri.ArcGISRuntime.Controls.SceneInteractionOptions.PropertyChanged">
@@ -6934,77 +6955,23 @@
             Occurs when a property value changes
             </summary>
         </member>
-        <member name="T:Esri.ArcGISRuntime.Controls.ElevationOptions">
+        <member name="T:Esri.ArcGISRuntime.Controls.RotationOptions">
             <summary>
-            Provides options for specifying the camera elevation behavior of <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> instances
+            Provides options for specifying the rotation behavior of <see cref="T:Esri.ArcGISRuntime.Controls.MapView"/> instances
             </summary>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.ElevationOptions.IsEnabled">
+        <member name="M:Esri.ArcGISRuntime.Controls.RotationOptions.OnPropertyChanged(System.String)">
             <summary>
-            Gets or sets whether heading is enabled on any associated <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> objects
+            Called when RotationOptions property changes.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.RotationOptions.IsEnabled">
+            <summary>
+            Gets or sets whether rotation is enabled on any associated <see cref="T:Esri.ArcGISRuntime.Controls.MapView"/> objects
             </summary>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.ElevationOptions.IsKeyboardEnabled">
-            <summary>
-            Gets or sets whether elevation is enabled when the elevation keys (U, J) are pressed
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.ElevationOptions.IsElevationInverted">
-            <summary>
-            Gets or sets whether the heading is inverted on the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>.
-            </summary>
-        </member>
-        <member name="E:Esri.ArcGISRuntime.Controls.ElevationOptions.PropertyChanged">
-            <summary>
-            Occurs when a property value changes
-            </summary>
-        </member>
-        <member name="T:Esri.ArcGISRuntime.Controls.PitchOptions">
-            <summary>
-            Provides options for specifying the pitch behavior of <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> instances
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.PitchOptions.IsEnabled">
-            <summary>
-            Gets or sets whether heading is enabled on any associated <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> objects
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.PitchOptions.IsKeyboardEnabled">
-            <summary>
-            Gets or sets whether pitch is enabled when the elevation keys (W, S) are pressed
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.PitchOptions.IsPitchInverted">
-            <summary>
-            Gets or sets whether the heading is inverted on the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>.
-            </summary>
-        </member>
-        <member name="E:Esri.ArcGISRuntime.Controls.PitchOptions.PropertyChanged">
-            <summary>
-            Occurs when a property value changes
-            </summary>
-        </member>
-        <member name="T:Esri.ArcGISRuntime.Controls.HeadingOptions">
-            <summary>
-            Provides options for specifying the heading behavior of <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> instances
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.HeadingOptions.IsEnabled">
-            <summary>
-            Gets or sets whether heading is enabled on any associated <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/> objects
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.HeadingOptions.IsKeyboardEnabled">
-            <summary>
-            Gets or sets whether heading is enabled when the elevation keys (A, D) are pressed
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Controls.HeadingOptions.IsHeadingInverted">
-            <summary>
-            Gets or sets whether the heading is inverted on the <see cref="T:Esri.ArcGISRuntime.Controls.SceneView"/>.
-            </summary>
-        </member>
-        <member name="E:Esri.ArcGISRuntime.Controls.HeadingOptions.PropertyChanged">
+        <member name="E:Esri.ArcGISRuntime.Controls.RotationOptions.PropertyChanged">
             <summary>
             Occurs when a property value changes
             </summary>
@@ -8556,6 +8523,49 @@
         </member>
         <member name="F:Esri.ArcGISRuntime.Controls.ScreenPointVisibility.Underground">
             <summary>Underground</summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Controls.SceneAtmosphereEffect">
+            <summary>
+            Represents the effect applied on Scene's atmosphere
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.SceneAtmosphereEffect.Basic">
+            <summary>
+            Atmospheric effects are rendered on the horizon.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.SceneAtmosphereEffect.Realistic">
+            <summary>
+            Realistic effects are rendered.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Controls.DrawStatus">
+            <summary>
+            Represents the current state of drawing the Scene.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.DrawStatus.InProgress">
+            <summary>
+            Scene is still drawing.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Controls.DrawStatus.Done">
+            <summary>
+            Scene draw has completed.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Controls.DrawStatusChangedEventArgs">
+            <summary>
+            Provides information for the <see cref="!:DrawStatusChanged"/> event.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Controls.DrawStatusChangedEventArgs.DrawStatus">
+            <summary>
+            Gets the new value of <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.DrawStatus"/> when change occurred.
+            </summary>
+            <value>
+            Returns the new value of <see cref="P:Esri.ArcGISRuntime.Controls.SceneView.DrawStatus"/>.
+            </value>
         </member>
         <member name="T:Esri.ArcGISRuntime.Controls.ViewLabelProperties">
             <summary>
@@ -10545,6 +10555,13 @@
             <param name="path">The path.</param>
             <returns></returns>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Data.Geodatabase.SetUser(System.String)">
+            <summary>
+            Sets the user of the geodatabase to allow editor tracking and 
+            ownership-based access control for features based on the specified username.
+            </summary>
+            <param name="userName"></param>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Data.Geodatabase.GetFeatureTableById(System.Int32)">
             <summary>
             Retrieve the dataset that corresponds to a paricular layerID in the 
@@ -10552,6 +10569,11 @@
             </summary>
             <param name="layerID">layer ID</param>
             <returns>dataset for layerID</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Data.Geodatabase.GeodatabaseId">
+            <summary>Gets the ID of the replica from which the geodatabase is created.</summary>
+            <remarks>GeodatabaseId will be null if the geodatabase is not associated with a replica</remarks>
+            <value>The Geodatabase Replica ID.</value>
         </member>
         <member name="P:Esri.ArcGISRuntime.Data.Geodatabase.Path">
             <summary>
@@ -10740,7 +10762,7 @@
             <param name="objectIDField">The name of the ObjectID field.</param>
             <param name="hasAttachments">if set to <c>true</c> the table will support attachments.</param>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Data.TableSchema.#ctor(System.String,System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.FieldInfo},System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:Esri.ArcGISRuntime.Data.TableSchema.#ctor(System.String,System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.FieldInfo},System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Data.TableSchema"/> class.
             </summary>
@@ -10753,6 +10775,7 @@
             <param name="editorTimeField">The name of the editor time field.</param>
             <param name="hasAttachments">if set to <c>true</c> the table will support attachments.</param>
             <param name="ignoreEditorFields">Specifies whether to ignore editor tracking</param>
+            <param name="ignoreGeometryField">Specifies whether to ignore geometry field</param>
             <exception cref="T:System.ArgumentException">
             name
             or
@@ -23517,7 +23540,7 @@
             Represents an image associated with an overlay or an icon style for the <see cref="T:Esri.ArcGISRuntime.Layers.KmlPlacemark"/>.
             </summary>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Layers.KmlFeatureIcon.#ctor(RuntimeCoreNet.CoreKmlFeature)">
+        <member name="M:Esri.ArcGISRuntime.Layers.KmlFeatureIcon.#ctor(System.Int32,System.Int32,System.Windows.Media.ImageSource)">
             <summary>
             Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Layers.KmlFeatureIcon"/> class.
             </summary>              
@@ -23536,6 +23559,16 @@
             <summary>
             Gets the ImageSource of the <see cref="T:Esri.ArcGISRuntime.Layers.KmlFeatureIcon"/>.
             </summary>          
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Layers.KmlNetworkLinkControlMessageEventArgs">
+            <summary>
+            EventArgs type for KmlLayer.KmlNetworkLinkControlMessage event.
+            </summary>	
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Layers.KmlNetworkLinkControlMessageEventArgs.Message">
+            <summary>
+            The pop-up message used as a guideline for the network link.
+            </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Layers.KmlLayer">
             <summary>
@@ -23628,6 +23661,11 @@
             <exception cref="T:System.ArgumentNullException">view</exception>
             <exception cref="T:System.ArgumentOutOfRangeException">maxHits</exception>
         </member>
+        <member name="E:Esri.ArcGISRuntime.Layers.KmlLayer.KmlNetworkLinkControlMessage">
+            <summary>
+            Occurs when a <see cref="T:Esri.ArcGISRuntime.Layers.KmlNetworkLink"/> send a message.
+            </summary>
+        </member>
         <member name="P:Esri.ArcGISRuntime.Layers.KmlLayer.SourceUri">
             <summary>
             Gets or sets the source of the <see cref="T:Esri.ArcGISRuntime.Layers.KmlFeature"/>.
@@ -23660,6 +23698,13 @@
         <member name="P:Esri.ArcGISRuntime.Layers.KmlLayer.KmlFeatureCount">
             <summary>
             Gets the number of <see cref="T:Esri.ArcGISRuntime.Layers.KmlFeature"/> in this <see cref="T:Esri.ArcGISRuntime.Layers.KmlFeature"/>.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Layers.KmlLayer.KmlFeatureIconKey">
+            <summary>
+            This class is used to identify unique KmlFeatureIcon, which is composed of two parts:
+            IconID - identifies image source, which may change or invalidated when icon_update callback is raised.
+            FeatureColor - blended with the icon
             </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Layers.KmlFeatureCollection">
@@ -25998,6 +26043,17 @@
             </remarks>
             <param name="portalUri">The portal URI.</param>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(System.Uri,System.Globalization.CultureInfo)">
+            <summary>
+            Creates asynchronously a new instance of the <see cref="T:Esri.ArcGISRuntime.Portal.ArcGISPortal"/> class from the specified portal Uri.
+            </summary>
+            <remarks>The portal Uri should end with '/sharing/rest'. An earlier pre-release version prior to rationalization and public release of the ArcGIS Online REST API may exist at http://&lt;host&gt;:&lt;port&gt;/sharing for the portal you are accessing.
+            Developers are cautioned not to access this pre-release version.
+            There are pitfalls to doing so and no advantages over using the released version of the api which is logically equivalent.
+            </remarks>
+            <param name="portalUri">The portal URI.</param>
+            <param name="culture">The culture for the portal.</param>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(System.Uri,System.Threading.CancellationToken,System.String)">
             <summary>
             Creates asynchronously a new instance of the <see cref="T:Esri.ArcGISRuntime.Portal.ArcGISPortal"/> class.
@@ -26008,6 +26064,21 @@
             There are pitfalls to doing so and no advantages over using the released version of the api which is logically equivalent.
             </remarks>
             <param name="portalUri">The portal URI.</param>
+            <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> with which to cancel the operation if required.</param>
+            <param name="token">The token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Portal.ArcGISPortal.CreateAsync(System.Uri,System.Globalization.CultureInfo,System.Threading.CancellationToken,System.String)">
+            <summary>
+            Creates asynchronously a new instance of the <see cref="T:Esri.ArcGISRuntime.Portal.ArcGISPortal"/> class.
+            If the URI is null, ArcGIS Online is used by default (http://www.arcgis.com/sharing/rest).
+            </summary>
+            <remarks>An earlier pre-release version prior to rationalization and public release of the ArcGIS Online REST API may exist at http://&lt;host&gt;:&lt;port&gt;/sharing for the portal you are accessing.
+            Developers are cautioned not to access this pre-release version.
+            There are pitfalls to doing so and no advantages over using the released version of the api which is logically equivalent.
+            </remarks>
+            <param name="portalUri">The portal URI.</param>
+            <param name="culture">The culture for the portal.</param>
             <param name="cancellationToken">A <see cref="T:System.Threading.CancellationToken"/> with which to cancel the operation if required.</param>
             <param name="token">The token.</param>
             <returns></returns>
@@ -29228,6 +29299,16 @@
         <member name="F:Esri.ArcGISRuntime.Portal.ItemType.RulePackage">
             <summary>
             ArcGIS Rule Package (rpk)
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Portal.ItemType.SceneService">
+            <summary>
+            ArcGIS Scene Service
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Portal.ItemType.WorkforceProject">
+            <summary>
+            ArcGIS Workforce Project
             </summary>
         </member>
         <member name="F:Esri.ArcGISRuntime.Portal.ItemType.Other">
@@ -34349,6 +34430,13 @@
                 Otherwise, the System.Threading.Tasks.Task.Exception is set.
             </returns>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.Geoprocessing.Geoprocessor.SubmitJobInternal(Esri.ArcGISRuntime.Tasks.Geoprocessing.GPInputParameter,System.Threading.CancellationToken,System.Boolean,System.Boolean)">
+            <summary>Submit the GP job with options.</summary>
+            <remarks>
+            - option not to use `/submitJob` url - deprecated in some services
+            - option to force POST for server requests
+            </remarks>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Tasks.Geoprocessing.Geoprocessor.CheckJobStatusAsync(System.String)">
             <summary>
                 Sends a request to the geoprocessing task for the current state of
@@ -36470,6 +36558,777 @@
             The value.
             </value>
         </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.BaseRouteResult">
+            <summary>
+            A base route result class with directions for <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult"/> and <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult"/>.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result">
+            <summary>
+            Abstract class containing the values common to all NA tasks.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.BeginningOfTime">
+            <summary>
+            A constant that is returned from the service in case when DateTime is null (for example ETA)
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result"/> class.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PointBarriers">
+            <summary>
+            Only the point barriers used in the analysis.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PolylineBarriers">
+            <summary>
+            Only the polyline barriers used in the analysis.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PolygonBarriers">
+            <summary>
+            Only the polygon barriers used in the analysis.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.Messages">
+            <summary>
+            List of messages.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.BaseRouteResult.Routes">
+            <summary>
+            List of routes.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters">
+            <summary> 
+            Input parameters for a <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters)"/> operation.  
+            </summary> 	 
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters">
+            <summary>
+            Base class for network analyst task parameters
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.CostAttrPrefix">
+            <summary>
+            Cost attribute prefix.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.MapPoint})">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.Uri)">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.String)">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.String,System.String)">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPointBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the point barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.Polyline})">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.Uri)">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.String)">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.String,System.String)">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolylineBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the line barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.Polygon})">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="barriers">Barriers for the route calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.Uri)">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.String)">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.String,System.String)">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.SetPolygonBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the polygon barriers for the route
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.RestrictionAttributeNames">
+            <summary>
+            Gets or sets the collection of network attribute names to be used as restrictions with the analysis.
+            </summary>
+            <value>
+            A collection of strings representing restriction attribute names.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.AttributeParameterValues">
+            <summary>
+            Gets or sets a collection of attribute parameter values that can be parameterized to determine which network elements can be used by a vehicle. 
+            </summary>
+            <value>
+            A collection of <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.AttributeParameterValue"/> objects.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.AccumulateAttributeNames">
+            <summary>
+            Gets or sets the collection of network attribute names to be accumulated with the analysis.
+            </summary>
+            <value>
+            A collection of strings representing of accumulation attribute names.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.OutSpatialReference">
+            <summary>
+            Gets or sets the spatial reference of the output geometries such as the routes or the stops.
+            </summary>
+            <value>
+            The out <see cref="T:Esri.ArcGISRuntime.Geometry.SpatialReference"/>.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.ImpedanceAttributeName">
+            <summary>
+            Gets or sets the network attribute name to be used as the impedance attribute in analysis. 
+            </summary>
+            <value>
+            The name of the impedance attribute.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.ReturnPointBarriers">
+            <summary>
+            Gets or sets a value indicating whether point barriers should be returned. The default is false. 
+            This parameter is applicable only if you have specified the value for the Point Barriers.
+            </summary>
+            <value>
+            <see langword="true"/> if point barriers should be returned; otherwise <see langword="false"/>.
+            </value>
+            <remarks>
+            <para>
+            Returning barriers can allow you to draw the point barrier locations in your application (if you do not already have access to them within your application). 
+            You may also want to set the returnBarriers property to true in order to determine if the point barriers were successfully located on the street network or had some other errors by checking the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Message.Description"/> property. 
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.ReturnPolylineBarriers">
+            <summary>
+            Gets or sets a value indicating whether polyline barriers should be returned. The default is false. 
+            This parameter is applicable only if you have specified the value for the Polyline Barriers.
+            </summary>
+            <value>
+            <see langword='true' /> if polyline barriers should be returned; otherwise <see langword='false' />.
+            </value>
+            <remarks>
+            <para>
+            Returning barriers can allow you to draw the polyline barrier locations in your application (if you do not already have access to them within your application). 
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.ReturnPolygonBarriers">
+            <summary>
+            Gets or sets a value indicating whether polygon barriers should be returned. The default is false. 
+            This parameter is applicable only if you have specified the value for the Polygon Barriers.
+            </summary>
+            <value>
+            <see langword='true' /> if polygon barriers should be returned; otherwise <see langword='false' />.
+            </value>
+            <remarks>
+            <para>
+            Returning barriers can allow you to draw the polygon barrier locations in your application (if you do not already have access to them within your application). 
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.ReturnZ">
+            <summary>
+            Gets or sets a value indicating whether Z values should be returned.
+            </summary>
+            <value>
+            <see langword='true' /> if Z values should be returned; otherwise <see langword='false' />.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.RestrictUTurns">
+            <summary>
+            Gets or sets a value indicating the nature of u-turn restrictions.
+            </summary>
+            <value>
+            The restrict U turns.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.OutputLines">
+            <summary>
+            Gets or sets the type of route features that are output by the service. This property is applicable only if the <see cref="!:ReturnRoutes"/> parameter is set to true. 
+            </summary>
+            <value>
+            A value of <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine"/> representing the desired output lines.
+            </value>
+            <remarks>
+            <para>
+            The output line type may be one of:
+            <list type="bullet">
+            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.None">No geometries returned for the route</see>.</item>
+            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.Straight">Straight lines between the stops</see>.</item>
+            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.TrueShape">The exact geometry based on the underlying streets</see>.</item>
+            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.TrueShapeWithMeasure">The exact geometry with measure information</see>.</item>
+            </list>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.OutputGeometryPrecision">
+            <summary>
+            Gets or sets the amount the result route geometry is simplified.
+            </summary>
+            <value>
+            A <see cref="T:System.Double"/> representing output geometry precision.
+            </value>
+            <remarks>
+            <para>
+            Simplification maintains critical points on a route, such as turns at intersections, to define the essential shape of the route and removes other points. 
+            The simplification distance you specify is the maximum allowable offset that the simplified line can deviate from the original line. 
+            Simplifying a line reduces the number of vertices that are part of the route geometry. 
+            This reduces the overall response size and also improves the performance for drawing the route shapes in the application. 
+            The default value for this parameter is 10. The units are specified with the outputGeometryPrecisionUnits parameter.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.OutputGeometryPrecisionUnit">
+            <summary>
+            Gets or sets the units for the value set in <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.OutputGeometryPrecision"/>. The default value is <see cref="P:Esri.ArcGISRuntime.Geometry.LinearUnits.Meters"/>.
+            </summary>
+            <value>
+            A <see cref="T:Esri.ArcGISRuntime.Geometry.LinearUnit"/> value representing the linear unit for simplification.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.PointBarriers">
+            <summary>
+            Gets or sets the point barriers.
+            </summary>
+            <value>
+            The point barriers.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.PolylineBarriers">
+            <summary>
+            Gets or sets the polyline barriers.
+            </summary>
+            <value>
+            The polyline barriers.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.PolygonBarriers">
+            <summary>
+            Gets or sets the polygon barriers.
+            </summary>
+            <value>
+            The polygon barriers.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NAParameters.UseHierarchy">
+            <summary>
+            Gets or sets a value indicating whether hierarchy should be used when finding the route.
+            </summary>
+            <value>
+            <see langword='true' /> if hierarchy should be used; otherwise <see langword='false' />.
+            </value>
+            <remarks>
+            <para>
+            Using a hierarchy results in the service preferring higher-order streets such as freeways to lower-order streets such as local roads. 
+            A parameter value of true indicates that the service should use hierarchy and can be used to simulate the driver preference of traveling on freeways instead of local roads even if that means a longer trip. 
+            This is especially true when finding long distance routes, as the driver will usually prefer to travel on freeways as much as possible and avoid the local roads. 
+            Using hierarchy is computationally faster, especially for long distance routes, as the service has to select the best route from a relatively smaller subset of streets. 
+            A parameter value of false indicates that the service should consider all the streets and not prefer higher-order streets when finding the route. 
+            This is often used when finding short-distance routes like routes within a city.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.#ctor">
+            <summary>
+            Initializes a new instance of the ClosestFacilityRouteParameters class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.MapPoint})">
+            <summary>
+            Sets the Facilities
+            </summary>
+            <param name="facilities">Facilities for the calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="facilities">Facilities for the calculation calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.Uri)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.String)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.String,System.String)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetFacilities(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.MapPoint})">
+            <summary>
+            Sets the Incidents
+            </summary>
+            <param name="incidents">Incidents for the calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the Incidents for the calculation
+            </summary>
+            <param name="incidents">Incidents for the calculation calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.Uri)">
+            <summary>
+            Sets the Incidents for the calculation
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.String)">
+            <summary>
+            Sets the Incidents for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify incidents by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.String,System.String)">
+            <summary>
+            Sets the Incidents for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify incidents by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.SetIncidents(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the Incidents for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify incidents by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.GetParameters(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NetworkDescription,System.Boolean)">
+            <summary>
+            Retrieve a generic string dictionary from a ClosestFacilityParameters object
+            </summary>
+            <param name="networkDescription">networkDescription - needed to retrieve base route parameters</param>
+            <param name="autoNormalize">Whether to normalize geometry</param>
+            <returns>Dictionary of string keys and values</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.Facilities">
+            <summary>
+            Gets or sets the Facilities.
+            </summary>
+            <value>
+            The Facilities.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.Incidents">
+            <summary>
+            Gets or sets the Incidents.
+            </summary>
+            <value>
+            The Incidents.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnFacilities">
+            <summary>
+             If <c>true</c>, facilities will be returned in the result.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnIncidents">
+            <summary>
+             If <c>true</c>, incidents will be returned in the result.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DefaultCutoff">
+            <summary>
+            Default cutoff value to stop traversing.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DefaultTargetFacilityCount">
+            <summary>
+            Default number of facilities to find
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsLengthUnits">
+            <summary>
+            Gets or sets the linear units in which the length information will be reported in the directions.
+            </summary>
+            <value>
+            A <see cref="T:Esri.ArcGISRuntime.Geometry.LinearUnit"/> representing the linear units reported in the directions.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsLanguage">
+            <summary>
+            Gets or sets the language that should be used when generating driving directions. This parameter is used only when the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnDirections"/> is set to true. 
+            </summary>
+            <value>
+            A <see cref="T:System.String"/> representing the desired directions language. For example "en" represents English.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsStyleName">
+            <summary>
+            Gets or sets the name of the directions style.
+            </summary>
+            <value>
+            A <see cref="T:System.String"/> representing the name of the directions style.
+            </value>
+            <remarks><para>
+            Valid values for this property are:
+            <list type="bullet">
+            <item>"NA Desktop": Turn-by-turn directions suitable for printing.</item>
+            <item>"NA Navigation": Turn-by-turn directions designed for an in-vehicle navigation device.</item>
+            <item>"NA Campus": Turn-by-turn walking directions, which are designed for pedestrian routes.</item>
+            </list>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnRoutes">
+            <summary>
+            Gets or sets a value indicating whether the analysis should return routes. The default is true. 
+            The shape of the routes depends on the value for the <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine"/> property.
+            </summary>
+            <value>
+            <see langword="true"/> if routes should be returned; otherwise <see langword="false"/>.
+            </value>
+            <remarks>
+            <para>
+            There are certain cases when it is not desirable to use a value of true for returnRoutes parameter. 
+            For example, if your application has to display only the driving directions between the stops, it is sufficient to just set the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnDirections"/> property to true to get the desired result. 
+            Setting the ReturnRoutes to true will not provide any additional information and will increase the overall response size which may not be suitable for certain applications such as those running on devices with low bandwidth data connections.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnDirections">
+            <summary>
+            Gets or sets a value indicating whether driving directions between the stops should be generated. The default is true.
+            </summary>
+            <value>
+            <see langword="true"/> if driving directions should be generated; otherwise <see langword="false"/>.
+            </value>
+            <remarks>
+            <para>
+            A true value indicates that the directions will be generated and configured based on the values for the 
+            <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsLanguageString"/>, <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsStyleName"/>, and <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DirectionsLengthUnits"/> parameters.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TravelDirection">
+            <summary>
+            Options for traveling to or from the facility.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDay">
+            <summary>
+            Arrival or Departure date and time.
+            </summary>
+            <value>
+            The time of day.
+            </value>
+            <remarks>
+            For example, if travelDirection set to <see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.FacilityTravelDirection.ToFacility"/> and <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDayUsage"/>
+            set to <see cref="!:TimeOfDayUsage.EndTime"/> and <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDay"/> is set to 8:00 AM, the route(s) built will arrive at the Facility at 8:00 in the morning, local time. 
+            </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDayUsage">
+            <summary>
+            Gets or sets how the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDay"/> value is used.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.DoNotLocateOnRestrictedElements">
+            <summary>
+            If true, restricted network elements should be considered when finding network locations. Default is false.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.FacilityTravelDirection">
+            <summary> 
+            Enumeration used to indicate there starting and  
+            ending points for directions 
+            </summary> 
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.FacilityTravelDirection.FromFacility">
+            <summary> 
+            Directions should be in order from facility to the location. 
+            </summary> 
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.FacilityTravelDirection.ToFacility">
+            <summary> 
+            Directions should bin in order from location to facility. 
+            </summary> 
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.TimeOfDayUsage">
+            <summary>
+             Defines how the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.TimeOfDay"/> value is used.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.TimeOfDayUsage.StartTime">
+            <summary>
+            Use as departure time.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.TimeOfDayUsage.EndTime">
+            <summary>
+            Use as arrival time.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult">
+            <summary>
+            ClosestFacilityResult is the result object returned from 
+            <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters)"/>
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult.#ctor">
+            <summary>
+            Constructs ClosestFacilityResults object
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult.DeserializeClosestFacilityResult(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NetworkDescription,System.String,Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters)">
+            <summary>
+            Creates a ClosestFacilityResult object from JSON service results
+            </summary>
+            <param name="networkDescription">network description</param>
+            <param name="jsonResult">JSON result from the service</param>
+            <param name="parameters">parameters used</param>
+            <returns>ClosestFacilityResult</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult.Facilities">
+            <summary>
+            Facilities are returned only if <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnFacilities"/> was set to true. 
+            </summary>		
+            <value>The facilities.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult.Incidents">
+            <summary>
+            Incidents are returned only if <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters.ReturnIncidents"/> was set to true.
+            </summary>		
+            <value>The incidents.</value>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask">
+            <summary>
+            Class used to perform a 'solve closest facility' operation on a network layer resource of type closest facility.
+            </summary>
+            <remarks>
+            To solve a closest facility problem, and thus find the closest facility to an incident or set of incidents, an instance of
+            <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters"/> must first be obtained via <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.GetDefaultParametersAsync"/>, then populated 
+            with any desired parameters.  These parameters are then passed to the ClosestFacilityTask instance and the task can be solved 
+            asynchronously using SolveAsync(ClosestFacilityParameters).
+            This operation, if successful, generates a <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityResult"/> from which the
+            relevant information (in particular the resulting routes) can be obtained.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the ClosestFacilityTask class for online service.
+            </summary>
+            <param name="serviceUri">The services Closest Facility URL.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.#ctor(System.Uri,System.String)">
+            <summary>
+            Initializes a new instance of the ClosestFacilityTask class for online service.
+            </summary>
+            <param name="serviceUri">The services Closest Facility URL.</param>
+            <param name="token">Token for accessing a secure ArcGIS task.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.GetDefaultParametersAsync">
+            <summary>
+            Retrieve default ClosestFacilityParameters from the service
+            </summary>
+            <returns>ClosestFacilityParameters with default values</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.GetDefaultParametersAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieve default ClosestFacilityParameters from the service
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns>ClosestFacilityParameters with default values</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters)">
+            <summary>
+            Sends a request to the service to solve a closest facility request
+            </summary>
+            <param name="parameters">ClosestFacilityParameters</param>>
+            <returns>ClosestFacilityResult</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityParameters,System.Threading.CancellationToken)">
+            <summary>
+            Sends a request to the service to solve a closest facility request
+            </summary>
+            <param name="parameters">ClosestFacilityParameters</param>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns>ClosestFacilityResult</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.ServiceUri">
+            <summary>
+            Gets the service URI.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.Token">
+            <summary>
+            Token for accessing a secure ArcGIS task.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ClosestFacilityTask.AutoNormalize">
+            <summary>
+            If <c>true</c> automatically normalizes geometry crossing the anti-meridian.
+            </summary>
+            <remarks>
+            Default is <c>true</c>. Normalization will only occur on geometries using
+            one of the supported spatial references supported.
+            </remarks>
+            
+        </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.CostAttribute">
             <summary>
             Represents an attribute used to measure and model impedance on the network, such as travel time (transit time on a street). 
@@ -36631,7 +37490,7 @@
             </para>
             <para>
             When the outputLines parameter is set to TrueShape or TrueShapeWithMeasure, the generalization of the route shape can be further controlled using the appropriate values for the 
-            <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputGeometryPrecision"/> and the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputGeometryPrecisionUnit"/> parameters.
+            <see cref="!:RouteParameters.OutputGeometryPrecision"/> and the <see cref="!:RouteParameters.OutputGeometryPrecisionUnit"/> parameters.
             </para>
             </remarks>
         </member>
@@ -36664,7 +37523,7 @@
             When this value is chosen for the outputLines parameter, each point that make up the route shape will include an M value along with X and Y values. 
             The M value, also known as the measure value, indicates the accumulated travel time or travel distance at that point along the route. 
             The M values can be used to determine how far you have traveled from the start of the route or the remaining distance or time left to reach the destination. 
-            The M values store travel time if the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ImpedanceAttributeName"/> is set to TravelTime and store the travel distance if the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ImpedanceAttributeName"/> is set to Kilometers or Miles.
+            The M values store travel time if the <see cref="!:RouteParameters.ImpedanceAttributeName "/> is set to TravelTime and store the travel distance if the <see cref="!:RouteParameters.ImpedanceAttributeName"/> is set to Kilometers or Miles.
             </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.DirectionsStringType">
@@ -37194,188 +38053,6 @@
             You can specify stops by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
             </remarks>
         </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.MapPoint})">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.Uri)">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.String)">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.String,System.String)">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPointBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
-            <summary>
-            Sets the point barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
-            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
-            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.Polyline})">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.Uri)">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.String)">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.String,System.String)">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolylineBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
-            <summary>
-            Sets the line barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
-            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
-            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.Polygon})">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="barriers">Barriers for the route calculation</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.Uri)">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.String)">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.String,System.String)">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.SetPolygonBarriers(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
-            <summary>
-            Sets the polygon barriers for the route
-            </summary>
-            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
-            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
-            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
-            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
-            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
-            <remarks>
-            You can specify barriers by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ImpedanceAttributeName">
-            <summary>
-            Gets or sets the network attribute name to be used as the impedance attribute in analysis. 
-            </summary>
-            <value>
-            The name of the impedance attribute.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.AccumulateAttributeNames">
-            <summary>
-            Gets or sets the collection of network attribute names to be accumulated with the analysis.
-            </summary>
-            <value>
-            A collection of strings representing of accumulation attribute names.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.RestrictionAttributeNames">
-            <summary>
-            Gets or sets the collection of network attribute names to be used as restrictions with the analysis.
-            </summary>
-            <value>
-            A collection of strings representing restriction attribute names.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.AttributeParameterValues">
-            <summary>
-            Gets or sets a collection of attribute parameter values that can be parameterized to determine which network elements can be used by a vehicle. 
-            </summary>
-            <value>
-            A collection of <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.AttributeParameterValue"/> objects.
-            </value>
-        </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.Stops">
             <summary>
             Gets or sets the stops.
@@ -37383,56 +38060,6 @@
             <value>
             The stops.
             </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.PointBarriers">
-            <summary>
-            Gets or sets the point barriers.
-            </summary>
-            <value>
-            The point barriers.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.PolylineBarriers">
-            <summary>
-            Gets or sets the polyline barriers.
-            </summary>
-            <value>
-            The polyline barriers.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.PolygonBarriers">
-            <summary>
-            Gets or sets the polygon barriers.
-            </summary>
-            <value>
-            The polygon barriers.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.RestrictUTurns">
-            <summary>
-            Gets or sets a value indicating the nature of u-turn restrictions.
-            </summary>
-            <value>
-            The restrict U turns.
-            </value>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.UseHierarchy">
-            <summary>
-            Gets or sets a value indicating whether hierarchy should be used when finding the route.
-            </summary>
-            <value>
-            <see langword='true' /> if hierarchy should be used; otherwise <see langword='false' />.
-            </value>
-            <remarks>
-            <para>
-            Using a hierarchy results in the service preferring higher-order streets such as freeways to lower-order streets such as local roads. 
-            A parameter value of true indicates that the service should use hierarchy and can be used to simulate the driver preference of traveling on freeways instead of local roads even if that means a longer trip. 
-            This is especially true when finding long distance routes, as the driver will usually prefer to travel on freeways as much as possible and avoid the local roads. 
-            Using hierarchy is computationally faster, especially for long distance routes, as the service has to select the best route from a relatively smaller subset of streets. 
-            A parameter value of false indicates that the service should consider all the streets and not prefer higher-order streets when finding the route. 
-            This is often used when finding short-distance routes like routes within a city.
-            </para>
-            </remarks>
         </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.StartTime">
             <summary>
@@ -37500,33 +38127,6 @@
             <see langword="true"/> if the last stop should be preserved when reordering stops; otherwise <see langword="false"/>.
             </value>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputLines">
-            <summary>
-            Gets or sets the type of route features that are output by the service. This property is applicable only if the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnRoutes"/> parameter is set to true. 
-            </summary>
-            <value>
-            A value of <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine"/> representing the desired output lines.
-            </value>
-            <remarks>
-            <para>
-            The output line type may be one of:
-            <list type="bullet">
-            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.None">No geometries returned for the route</see>.</item>
-            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.Straight">Straight lines between the stops</see>.</item>
-            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.TrueShape">The exact geometry based on the underlying streets</see>.</item>
-            <item><see cref="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputLine.TrueShapeWithMeasure">The exact geometry with measure information</see>.</item>
-            </list>
-            </para>
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutSpatialReference">
-            <summary>
-            Gets or sets the spatial reference of the output geometries such as the routes or the stops.
-            </summary>
-            <value>
-            The out <see cref="T:Esri.ArcGISRuntime.Geometry.SpatialReference"/>.
-            </value>
-        </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnDirections">
             <summary>
             Gets or sets a value indicating whether driving directions between the stops should be generated. The default is true.
@@ -37574,57 +38174,6 @@
             </para>
             </remarks>
         </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnPointBarriers">
-            <summary>
-            Gets or sets a value indicating whether point barriers should be returned. The default is false. 
-            This parameter is applicable only if you have specified the value for the Point Barriers.
-            </summary>
-            <value>
-            <see langword="true"/> if point barriers should be returned; otherwise <see langword="false"/>.
-            </value>
-            <remarks>
-            <para>
-            Returning barriers can allow you to draw the point barrier locations in your application (if you do not already have access to them within your application). 
-            You may also want to set the returnBarriers property to true in order to determine if the point barriers were successfully located on the street network or had some other errors by checking the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Message.Description"/> property. 
-            </para>
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnPolylineBarriers">
-            <summary>
-            Gets or sets a value indicating whether polyline barriers should be returned. The default is false. 
-            This parameter is applicable only if you have specified the value for the Polyline Barriers.
-            </summary>
-            <value>
-            <see langword='true' /> if polyline barriers should be returned; otherwise <see langword='false' />.
-            </value>
-            <remarks>
-            <para>
-            Returning barriers can allow you to draw the polyline barrier locations in your application (if you do not already have access to them within your application). 
-            </para>
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnPolygonBarriers">
-            <summary>
-            Gets or sets a value indicating whether polygon barriers should be returned. The default is false. 
-            This parameter is applicable only if you have specified the value for the Polygon Barriers.
-            </summary>
-            <value>
-            <see langword='true' /> if polygon barriers should be returned; otherwise <see langword='false' />.
-            </value>
-            <remarks>
-            <para>
-            Returning barriers can allow you to draw the polygon barrier locations in your application (if you do not already have access to them within your application). 
-            </para>
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.ReturnZ">
-            <summary>
-            Gets or sets a value indicating whether Z values should be returned.
-            </summary>
-            <value>
-            <see langword='true' /> if Z values should be returned; otherwise <see langword='false' />.
-            </value>
-        </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.IgnoreInvalidLocations">
             <summary>
             Gets or sets a value indicating whether invalid locations should be ignored.
@@ -37662,31 +38211,6 @@
             You may also want to set the ReturnStops property to true in order to determine if the stops were successfully located on the street network or had some other errors by checking the <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Message.Description"/> property. 
             </para>
             </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputGeometryPrecision">
-            <summary>
-            Gets or sets the amount the result route geometry is simplified.
-            </summary>
-            <value>
-            A <see cref="T:System.Double"/> representing output geometry precision.
-            </value>
-            <remarks>
-            <para>
-            Simplification maintains critical points on a route, such as turns at intersections, to define the essential shape of the route and removes other points. 
-            The simplification distance you specify is the maximum allowable offset that the simplified line can deviate from the original line. 
-            Simplifying a line reduces the number of vertices that are part of the route geometry. 
-            This reduces the overall response size and also improves the performance for drawing the route shapes in the application. 
-            The default value for this parameter is 10. The units are specified with the outputGeometryPrecisionUnits parameter.
-            </para>
-            </remarks>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputGeometryPrecisionUnit">
-            <summary>
-            Gets or sets the units for the value set in <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteParameters.OutputGeometryPrecision"/>. The default value is <see cref="P:Esri.ArcGISRuntime.Geometry.LinearUnits.Meters"/>.
-            </summary>
-            <value>
-            A <see cref="T:Esri.ArcGISRuntime.Geometry.LinearUnit"/> value representing the linear unit for simplification.
-            </value>
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.LocalRouteTask">
             <summary>
@@ -37927,11 +38451,6 @@
             Total costs prefix.
             </summary>
         </member>
-        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OnlineRouteTask.CostAttrPrefix">
-            <summary>
-            Cost attribute prefix.
-            </summary>
-        </member>
         <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OnlineRouteTask.#ctor(System.Uri)">
             <summary>
             Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OnlineRouteTask"/> class for online service.
@@ -38005,36 +38524,6 @@
             <value>
             A dictionary of key value pairs representing the restriction parameters.
             </value>
-        </member>
-        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result">
-            <summary>
-            Abstract class containing the values common to all NA tasks.
-            </summary>
-        </member>
-        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result"/> class.
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PointBarriers">
-            <summary>
-            Only the point barriers used in the analysis.
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PolylineBarriers">
-            <summary>
-            Only the polyline barriers used in the analysis.
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.PolygonBarriers">
-            <summary>
-            Only the polygon barriers used in the analysis.
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Result.Messages">
-            <summary>
-            List of messages.
-            </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.Route">
             <summary>
@@ -38186,25 +38675,312 @@
             Represents the route result.
             </summary>
         </member>
-        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult.BeginningOfTime">
-            <summary>
-            A constant that is returned from the service in case when DateTime is null (for example ETA)
-            </summary>
-        </member>
         <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult"/> class.
-            </summary>
-        </member>
-        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult.Routes">
-            <summary>
-            List of routes.
             </summary>
         </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.RouteResult.Stops">
             <summary>
             FeatureSet representing the stops used to perform routing.
             </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters">
+            <summary> 
+            Input parameters for a <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters)"/> operation.  
+            </summary> 	 
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.#ctor">
+            <summary>
+            Initializes a new instance of the ServiceAreaParameters class.
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Geometry.MapPoint})">
+            <summary>
+            Sets the Facilities
+            </summary>
+            <param name="facilities">Facilities for the calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.Collections.Generic.IEnumerable{Esri.ArcGISRuntime.Data.Feature})">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="facilities">Facilities for the calculation calculation</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.Uri)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="uri">REST Query endpoint to a Feature, Map, or GP service returning a JSON feature set.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.String)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.String,System.String)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SetFacilities(System.String,System.String,Esri.ArcGISRuntime.Geometry.Geometry,Esri.ArcGISRuntime.Geometry.SpatialRelationship)">
+            <summary>
+            Sets the Facilities for the calculation
+            </summary>
+            <param name="layerName">The name or Id of the data layer in the map service that is being referenced.</param>
+            <param name="whereClause">A where clause for the query filter. Any legal SQL where clause operating on the fields in the layer is allowed.</param>
+            <param name="spatialFilter"> The geometry to apply as the spatial filter.</param>
+            <param name="spatialRelationship"> The spatial relationship to be applied on the input geometry. 
+            The supported spatial relationships include intersects, contains, envelope intersects, within, etc.</param>
+            <remarks>
+            You can specify facilities by referencing a data layer in the map service. Attribute and spatial filters can also be applied on the layer.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.GetParameters(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NetworkDescription,System.Boolean)">
+            <summary>
+            Retrieve a generic string dictionary from a ServiceAreaParameters object
+            </summary>
+            <param name="networkDescription">networkDescription - needed to retrieve base route parameters</param>
+            <param name="autoNormalize">Whether to normalize geometry</param>
+            <returns>Dictionary of string keys and values</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.Facilities">
+            <summary>
+            Gets or sets the Facilities.
+            </summary>
+            <value>
+            The Facilities.
+            </value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.ReturnFacilities">
+            <summary>
+             If <c>true</c>, facilities will be returned in the result.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.TravelDirection">
+            <summary>
+            Options for traveling to or from the facility.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.OverlapLines">
+            <summary>
+            Indicates if the lines should overlap from multiple facilities. The 
+            default is defined in the network analysis.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.OverlapPolygons">
+            <summary>
+            Indicates if the polygons for all facilities should overlap. 
+            The default is defined in the network analysis layer.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SplitLinesAtBreaks">
+            <summary>
+            Lines will be split at breaks. The default is defined in 
+            the network analysis layer.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.SplitPolygonsAtBreaks">
+            <summary>
+            polygons will be split at breaks. The default is defined 
+            in the network analysis layer.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.TrimOuterPolygon">
+            <summary>
+             the outermost polygon (at the maximum break value) will be trimmed. 
+             The default is defined in the network analysis layer.
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.TrimPolygonDistance">
+            <summary>
+             If polygons are being trimmed, provides the distance to trim. 
+             The default is defined in the network analysis layer. 
+            </summary>
+            <value>The trim polygon distance.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.TrimPolygonDistanceUnits">
+            <summary>
+            If polygons are being trimmed, specifies the units of the trimPolygonDistance. 
+            The default is defined in the network analysis layer. 
+            </summary>
+            <value>The trim polygon distance units.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.OutputPolygons">
+            <summary>
+            The type of polygon(s) generated. The default is as defined in the network analysis layer.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.DefaultBreaks">
+            <summary>
+            A list of doubles.
+            </summary>
+            <value>The default breaks.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.ExcludeSourcesFromPolygons">
+            <summary>
+            A list of string names.
+            </summary>
+            <value>The exclude sources from polygons.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.MergeSimilarPolygonRanges">
+            <summary>
+            Similar ranges will be merged in the result polygons.
+            </summary>
+            <value>The merge similar polygon ranges.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.TimeOfDay">
+            <summary>
+            Gets or sets the time of day. The time of day the solver should use 
+            when determining the distances of the service area. 
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.DoNotLocateOnRestrictedElements">
+            <summary>
+            If true, restricted network elements should be considered when finding network locations. Default is false.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputPolygons">
+            <summary>
+            The enumeration types for output polygon.
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputPolygons.Default">
+            <summary>
+            Use the service defaults
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputPolygons.None">
+            <summary>
+            The polygon output
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputPolygons.Simplified">
+            <summary>
+            Simplified output polygon
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.OutputPolygons.Detailed">
+            <summary>
+            Detailed output polygon
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult">
+            <summary>
+            ServiceAreaResult is the result object returned from <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters)"/>
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult.#ctor">
+            <summary>
+            Constructs ClosestFacilityResults object
+            </summary>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult.DeserializeServiceAreaResult(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.NetworkDescription,System.String,Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters)">
+            <summary>
+            Creates a ServiceAreaResult object from JSON service results
+            </summary>
+            <param name="networkDescription">network description</param>
+            <param name="jsonResult">JSON result from the service</param>
+            <param name="parameters">parameters used</param>
+            <returns>ClosestFacilityResult</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult.Facilities">
+            <summary>
+            Facilities are returned only if <see cref="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters.ReturnFacilities"/> was set to true. 
+            </summary>		
+            <value>The facilities.</value>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult.Polygons">
+            <summary>
+            Gets the service area polygons
+            </summary>		
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult.Polylines">
+            <summary>
+            Gets the service area polylines
+            </summary>		
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask">
+            <summary>
+            Class used to perform a 'service area' operation on a network layer resource of type service area.
+            </summary>
+            <remarks>
+            To solve a service area problem, and thus find the service areas for an input facility/location or set of facilities/locations, an instance of 
+            <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters"/> must first be obtained using <see cref="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.GetDefaultParametersAsync"/> then populated with any desired 
+            parameters. These parameters are then passed to the ServiceAreaTask instance and the task can be solved asynchronously using SolveAsync(ServiceAreaParameters). 
+            In both cases this operation, if successful, generates a <see cref="T:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaResult"/> from which the relevant information (in particular 
+            the service area polygons) can be obtained.
+            </remarks>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.#ctor(System.Uri)">
+            <summary>
+            Initializes a new instance of the ServiceAreaTask class for online service.
+            </summary>
+            <param name="serviceUri">The services Closest Facility URL.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.#ctor(System.Uri,System.String)">
+            <summary>
+            Initializes a new instance of the ServiceAreaTask class for online service.
+            </summary>
+            <param name="serviceUri">The service's service area URL.</param>
+            <param name="token">Token for accessing a secure ArcGIS task.</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.GetDefaultParametersAsync">
+            <summary>
+            Retrieve default ServiceAreaParameters from the service
+            </summary>
+            <returns>ServiceAreaParameters with default values</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.GetDefaultParametersAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieve default ServiceAreaParameters from the service
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns>ClosestFacilityParameters with default values</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters)">
+            <summary>
+            Sends a request to the service to solve a service area request
+            </summary>
+            <param name="parameters">ServiceAreaParameters</param>>
+            <returns>ServiceAreaResult</returns>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.SolveAsync(Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaParameters,System.Threading.CancellationToken)">
+            <summary>
+            Sends a request to the service to solve a service area request
+            </summary>
+            <param name="parameters">ServiceAreaParameters</param>
+            <param name="cancellationToken">CancellationToken</param>
+            <returns>ServiceAreaResult</returns>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.ServiceUri">
+            <summary>
+            Gets the service URI.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.Token">
+            <summary>
+            Token for accessing a secure ArcGIS task.
+            </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.NetworkAnalyst.ServiceAreaTask.AutoNormalize">
+            <summary>
+            If <c>true</c> automatically normalizes geometry crossing the anti-meridian.
+            </summary>
+            <remarks>
+            Default is <c>true</c>. Normalization will only occur on geometries using
+            one of the supported spatial references supported.
+            </remarks>
+            
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.Offline.GenerateGeodatabaseParameters">
             <summary>
@@ -38277,8 +39053,15 @@
             <remarks>
             If true, attachments are added to the geodatabase and returned in the response. 
             Otherwise, attachments are not included. The default is false. This parameter 
-            is only applicable if the feature service has attachments.
+            is only applicable if the feature service has attachments. 
+            If true but <see cref="P:Esri.ArcGISRuntime.Tasks.Offline.GenerateGeodatabaseParameters.AttachmentsSyncDirection"/> is none, no attachments will be returned.
             </remarks>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.Offline.GenerateGeodatabaseParameters.AttachmentsSyncDirection">
+            <summary>
+            Gets or sets the direction in which attachments will be synchronized.
+            If bidirectional but <see cref="P:Esri.ArcGISRuntime.Tasks.Offline.GenerateGeodatabaseParameters.ReturnAttachments"/> is false, no attachments will be downloaded or uploaded.
+            </summary>
         </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.Offline.GenerateGeodatabaseParameters.GeodatabasePrefixName">
             <summary>
@@ -38326,6 +39109,26 @@
             on an existing replica definition (refReplicaId). It can be used to specify
             parameters for registration of existing data for sync. The create replica
             operation will create a replica, but will not return data.
+            </summary>
+        </member>
+        <member name="T:Esri.ArcGISRuntime.Tasks.Offline.AttachmentsSyncDirection">
+            <summary>
+            The sync direction for attachments
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.Offline.AttachmentsSyncDirection.Bidirectional">
+            <summary>
+            Upload and download
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.Offline.AttachmentsSyncDirection.Upload">
+            <summary>
+            Upload only
+            </summary>
+        </member>
+        <member name="F:Esri.ArcGISRuntime.Tasks.Offline.AttachmentsSyncDirection.None">
+            <summary>
+            No upload nor download
             </summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.Offline.SyncGeodatabaseParameters">
@@ -38767,6 +39570,13 @@
             <param name="geodatabase">The geodatabase to unregister</param>
             <returns>Unregister result status</returns>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.Offline.GeodatabaseSyncTask.UnregisterGeodatabaseAsync(System.String)">
+            <summary>
+            Unregisters a geodatabase from the server by geodatabase ID
+            </summary>
+            <param name="geodatabaseId">The geodatabase ID to unregister</param>
+            <returns>Unregister result status</returns>
+        </member>
         <member name="M:Esri.ArcGISRuntime.Tasks.Offline.GeodatabaseSyncTask.RegisterGeodatabaseAsync(Esri.ArcGISRuntime.Data.Geodatabase)">
             <summary>
             Registers an existing sync-enabled geodatabase with a feature service as a new instance so that edits can be synced.
@@ -38917,6 +39727,10 @@
             Represents the result of a generate tile cache operation
             </summary>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.Offline.GenerateTileCacheResult.CreateFromUrls(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>Create a GenerateTileCacheResult from a collection of URLs</summary>
+            <remarks>Used when manually parsing ExportTiles responses from hosted services</remarks>
+        </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.Offline.GenerateTileCacheResult.Folders">
             <summary>
             Gets the folders included in the result
@@ -38977,6 +39791,10 @@
             Represents a file or folder in the result of an generate tile cache operation
             </summary>
         </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheItem.CreateFromUrl(System.String)">
+            <summary>Create a ExportTileCacheItem from a URL</summary>
+            <remarks>Used when manually parsing ExportTiles responses from hosted services</remarks>
+        </member>
         <member name="P:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheItem.Name">
             <summary>
             Gets the name of the item
@@ -39017,6 +39835,15 @@
             <summary>
             Gets informational messages for the generate tile cache operation
             </summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheJob.IsHostedService">
+            <summary>Indicates if this job is hosted or arcgis server</summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheJob.ResultURL">
+            <summary>Result URL from GenerateTileCacheAsync call</summary>
+        </member>
+        <member name="P:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheJob.FileUrlsToDownload">
+            <summary>File URL strings for downloading from hosted service</summary>
         </member>
         <member name="T:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheTask">
             <summary>
@@ -39076,6 +39903,23 @@
             Checks the status of a generate tile cache operation
             </summary>
             <param name="job">The tile cache generation job to check status for</param>
+        </member>
+        <member name="M:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheTask.CheckExportTilesJobStatus(Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheJob)">
+            <summary>
+            Checks the status of an ExportTiles job
+            </summary>
+            <remarks>
+            Hosted services return different responses than on-premise ArcGIS Server services.
+            Hosted responses do not have the standard 'results' JSON attribute; rather, they
+            have an 'output' attribute like this:
+            	"output": {
+            		"itemId": "",
+            		"outputUrl": [
+            		"http://server.arcgis.com/.../MapServer/jobs/4104e7a4-.../output/b4f02969.tpk"
+            		]
+            	}
+            This attribute has the actual files to be downloaded (instead of a redirect URL as ArcGIS Server result)
+            </remarks>
         </member>
         <member name="M:Esri.ArcGISRuntime.Tasks.Offline.ExportTileCacheTask.EstimateTileCacheSizeAsync(Esri.ArcGISRuntime.Tasks.Offline.GenerateTileCacheParameters)">
             <summary>
@@ -42341,6 +43185,9 @@
         <member name="F:Esri.ArcGISRuntime.WebMap.WebMapLayerType.ArcGISTiledImageServiceLayer">
             <summary>ArcGISTiledImageServiceLayer</summary>
         </member>
+        <member name="F:Esri.ArcGISRuntime.WebMap.WebMapLayerType.NotSupported">
+            <summary>Not supported type</summary>
+        </member>
         <member name="P:Esri.ArcGISRuntime.WebMap.WebMapLayerLoader.MapServiceMetaData.Type">
             <summary>
             Gets the service type.
@@ -42795,36 +43642,6 @@
         <member name="M:RuntimeCoreNet.CoreImage.Finalize">
             <summary>
             Clean up unmanged memory to prevent leak.
-            </summary>
-        </member>
-        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
-            <summary>
-            GeneratedInternalTypeHelper
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
-            <summary>
-            CreateInstance
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            GetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            SetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
-            <summary>
-            CreateDelegate
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
-            <summary>
-            AddEventHandler
             </summary>
         </member>
     </members>
