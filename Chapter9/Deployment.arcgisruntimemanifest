@@ -1,0 +1,10 @@
+{
+  "version": "10.2.7",
+  "suppress": [],
+  "include": {
+    "ArcGIS Runtime": true,
+    "Local Server": {
+      "Geoprocessing": true
+    }
+  }
+}
